@@ -202,6 +202,15 @@ This comes by construction as we skip every other transition. Therefore, to cons
 \subsection*{Problem 7}
 
 \subsection*{Problem 8}
+Claim: The relation $x \equiv_L y$, meaning $\forall z \in \{0,1\}^*, xz \in L \iff yz \in L$, is an equivalence relation.
+\begin{itemize}
+\item Reflexivity: Obviously $x$ is indistinguishable from $x$, since $\forall z \in \{0,1\}^*, xz = xz \implies xz \in L \iff zz \in L$.
+\item Symmetry: This follows from the if and only if of the definition of $\equiv_L$, which is itself is an equivalence relation. Meaning $(xz \in L \iff yz \in L) \iff (yz \in L \iff xz \in L)$
+\item Transitivity: This also follows from the if and only if of the definition. Suppose $\equiv_L$ was not transitive, then there are strings $x,y,w$ such that $\forall z' \in \{0,1\}^*, xz' \in L \iff yz' \in L$ and $yz \in L \iff wz \in L$ but $\exits z \in \{0,1\}^* xz \in L, wz \notin L$. However, we know that if $wz \notin L$, then $yz \notin L$, and if $yz \notin L$ then $xz \notin L$. This is a contradiction, saying $xz$ is both in $L$ and not in $L$. Therefore this relation is transitive.
+\end{itemize}
 
+We have shown all properties of an equivalence relation, so $x \equiv_L y$ is an equivalence relation.
+
+\subsection*{Problem 9}
 
 \end{document}
