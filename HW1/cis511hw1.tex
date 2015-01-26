@@ -159,4 +159,49 @@ The proof is, again, very similar to the proof that NFAs recognize regular langu
 
 Therefore, the set of languages that all-NFAs accept is the set of regular languages.
 
+\subsection*{Problem 5}
+Let $A$ be a language over $\{0,1\}^*$. Define the language $B$ called even-$A$ as follows:
+\[ B = \{ v_1 v_2 \cdots v_k | \exists w_1 w_2 \cdots w_k : w_1 v_1 w_2 v_2 \cdots w_k v_k \in A \} \]
+Prove $B$ is regular.
+
+Consider the DFA $M = (\Sigma,Q_M,\delta_M,q_{M0},F_M)$. Create a new NFA $N = (\Sigma,Q_N,\delta_N,q_{N0},F_N)$ that accepts $B$ using $A$. The idea is to skip every other state. In other picture form, this:
+
+\begin{tikzpicture}[shorten >=1pt,node distance=2cm,on grid,auto] 
+   \node[state] (q_00)   {$q$}; 
+   \node[state] (q_01) [right=of q_00] {$q'$}; 
+   \node[state] (q_10) [right=of q_01] {$q''$};
+    \path[->] 
+    (q_00) edge node {$\sigma \in \Sigma$}  (q_01)
+    (q_01) edge node {$\sigma' \in \Sigma$} (q_10);
+\end{tikzpicture}
+
+Turns into this:
+
+\begin{tikzpicture}[shorten >=1pt,node distance=2cm,on grid,auto] 
+   \node[state] (q_00)   {$q$}; 
+   \node[state] (q_01) [right=of q_00] {$q'$}; 
+   \node[state] (q_10) [right=of q_01] {$q''$};
+    \path[->] 
+    (q_00) edge[bend left] node {$\sigma'$}  (q_10);
+\end{tikzpicture}
+
+More formally:
+\begin{align*}
+                              Q_N &=\; Q_M \\
+ \delta_M(q \in Q_N,a \in \Sigma) &=\; \{ q' \in Q_M | \exists b \in \Sigma : q' = \delta(\delta(q,b),a) \} \\
+                           q_{N0} &=\; \{q_{M0}\} \\
+                              F_N &=\; F_M \\
+\end{align*}
+
+Now we show this only accepts strings in $B$. 
+
+This comes by construction as we skip every other transition. Therefore, to construct a string in $A$, we take the accepting path and insert the symbols we skipped, and therefore we have a string in $B$. So if a string is accepted we can find a string in $A$ that it corresponds to. And it cannot accept any string not in $B$ since we can construct this string from $A$. 
+
+\subsection*{Problem 6}
+
+\subsection*{Problem 7}
+
+\subsection*{Problem 8}
+
+
 \end{document}
