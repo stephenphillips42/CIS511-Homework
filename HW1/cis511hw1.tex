@@ -4,6 +4,7 @@
 \usepackage[letterpaper]{geometry}
 \geometry{verbose,tmargin=1in,bmargin=1in,lmargin=1in,rmargin=1in}
 \usepackage{amsmath}
+\usepackage{amssymb}
 \usepackage{tikz}
 \usetikzlibrary{automata,positioning}
 
@@ -84,8 +85,8 @@ Here the states $q_{ij}$ mean we have see $i$ (mod 2) total symbols and $j$ (mod
 
 \subsection*{Problem 2}
 \subsubsection*{(a)}
-Using the method we did in class, we need to find $R_{ij}^k$ for $i,j \in \{0,1,2\}, k \in \{1,2\}$
-
+Using the method we did in class, we need to find $R_{ij}^k$ for $i,j \in \{0,1,2\}, k \in \{1,2\}$. The general formula is
+$ R_{i,j}^{k+1} = R_{i,j}^{k} \cup (R_{i,k+1}^{k} (R_{k+1,k+1}^{k})^{*}) R_{k+1,j}^{k} $
 \begin{align*}
 R_{11}^{0} &=\; a \\
 R_{12}^{0} &=\; b \\
@@ -95,8 +96,67 @@ R_{11}^{1} &=\; R_{11}^0 \cup R_{11}^0 R_{11}^{0*} R_{11}^0 = a \cup (a a^{*} a)
 R_{12}^{1} &=\; R_{12}^0 \cup R_{11}^0 R_{11}^{0*} R_{12}^0 = b \cup (a a^{*} b) \\
 R_{21}^{1} &=\; R_{21}^0 \cup R_{21}^0 R_{11}^{0*} R_{11}^0 = b \cup (b a^{*} a) \\
 R_{22}^{1} &=\; R_{22}^0 \cup R_{21}^0 R_{11}^{0*} R_{12}^0 = a \cup (b a^{*} b) \\
-R_{12}^{2} &=\; R_{12}^1 \cup R_{12}^1 R_{22}^{1*} R_{22}^1 = (b \cup a a^{*} b) \cup (b (a \cup b a^{*} b)^{*} (a \cup (b a^{*} b))) \\
+R_{12}^{2} &=\; R_{12}^1 \cup R_{12}^1 R_{22}^{1*} R_{22}^1 = (b \cup a a^{*} b) \cup ((b \cup (a a^{*} b)) (a \cup b a^{*} b)^{*} (a \cup (b a^{*} b))) \\
+\end{align*}
+So the final regular expression is $R_{12}^{2} = (b \cup a a^{*} b) \cup ((b \cup (a a^{*} b)) (a \cup b a^{*} b)^{*} (a \cup (b a^{*} b)))$. The simpler regular expression is $a^{*} b a^{*} (b a^{*} b a^{*})^{*}$ (seen from inspection), which this matches.
+
+\subsubsection*{(b)}
+We again use the same technique, this time in tabular form. The general formula is, again, 
+$ R_{i,j}^{k+1} = R_{i,j}^{k} \cup (R_{i,k+1}^{k} (R_{k+1,k+1}^{k})^{*}) R_{k+1,j}^{k} $
+
+\begin{table}[h]
+\begin{tabular}{c|c|c|c|c}
+Reg. Exp./Level & 0             & 1                  & 2                                           & 3 \\
+$R_{11}$        &$\varepsilon$&$\varepsilon$         &$\varepsilon$                                &$(a\cup b)a^*b(ba^*b)^*a$  \\
+$R_{12}$        &$a \cup b$   &$a \cup b$            &$(a\cup b)\cup(a\cup b)a^*a$                 &(Not ending on final state)  \\
+$R_{13}$        &$\varnothing$&$\varepsilon$         &$(a\cup b)a^*b$                              &$(a\cup b)a^*b(ba^*b)^*ba^*b$  \\
+$R_{21}$        &$\varnothing$&$\varnothing$         &$\varnothing$                                &(Not starting at initial state) \\
+$R_{22}$        &$a$          &$a$                   &$a\cup aa^*a$                                &(Not starting at initial state) \\
+$R_{23}$        &$b$          &$b$                   &$b\cup aa^*b$                                &(Not starting at initial state) \\
+$R_{31}$        &$a$          &$a$                   &$a$                                          &(Not starting at initial state) \\
+$R_{32}$        &$b$          &$b \cup (b(a \cup b))$&$b\cup b(a\cup b)\cup((b\cup b(a\cup b))a^*a$&(Not starting at initial state) \\
+$R_{33}$        &$\varepsilon$&$\varepsilon$         &$b(a)^*b$                                    &(Not starting at initial state)  
+\end{tabular}
+\end{table}
+
+So the final expression is $ R_{11}^{3} \cup R_{13}^{3} = ((a\cup b)a^*b(ba^*b)^*a) \cup ((a\cup b)a^*b(ba^*b)^*ba^*b) $. This
+DFA does not have any intuitive regular expression that can be seen from inspection, so this technique is the best way to do it.
+
+\subsection*{Problem 3}
+Claim: If a language $A$ is regular, then its reverse $A^\mathcal{R}$ is regular.
+Proof:
+Let $M = (Q,\Sigma,\delta,q_0,F)$ be the DFA accepting the language $A$. Create the NFA $N = (Q',\Sigma,\delta',q_0',F')$. The idea is to make $N$ such that it reverses all the edges of $M$, and create a new start state that has epsilon transitions to the final states of $M$, with the accepting state being the starting state of $M$. Specifically:
+\begin{align*}
+                           Q' &=\; Q \cup \{q_0'\} \\
+ \delta(q \in Q,a \in \Sigma) &=\; \{ q' \in Q | \delta(q',a) = q \} \\
+        \delta(q_0',\epsilon) &=\; F \\
+                           F' &=\; \{q_0\}
 \end{align*}
 
+All transitions not specified map to the empty set. Now we have to show this machine accepts a string if and only if the string is in $A^\mathcal{R}$.
+
+Proving that it accepts if the string is in $A^\mathcal{R}$ is rather simple. If a string $s \in A^\mathcal{R}$ then there is a path from one of the final paths to the initial state of $M$, since the reverse of the string would have been accepted by $M$. Therefore our machine $N$ accepts this string.
+
+Now we must prove it does not accept any other strings. Suppose not, and there was a string $s \notin A^\mathcal{R}$ that was accepted by this machine. Since it accepted, there must have been at least one path to the initial state of $M$. However, we started at all the final states of $M$, since our initial state $q_0'$ only had epsilon transitions to the final states of $M$, and went to nothing else. So that means there is a path from a final state to the initial state. There cannot be more than one of these paths because $M$ was a DFA. This means that the reverse of this string would have been accepted $M$, which is a contradiction since we assumed that $s \notin A^\mathcal{R}$.
+
+We have proved this machine $N$ accepts only strings in $A^\mathcal{R}$. Since any NFA can be converted to a DFA, that means $A^\mathcal{R}$ is regular for any regular language $A$.
+
+\subsection*{Problem 4}
+So an all-NFA $M$ is a five-tuple $(\Sigma,Q,\delta,q_0,F)$, that acts just like an NFA except it only accepts if all non-deterministic paths end up in states in $F$. We will show that this recognizes the set of regular languages.
+
+In one direction, any DFA is an all-NFA. Since in a DFA's $\delta$ only maps a state to only one other state, we only ever have one path, and therefore if a string gives an accepting path, the final state it ends up in is the only final state it ends up in (you know, determinism).
+
+In the other direction, we can create a DFA for any all-NFA. It is similar to the construction of DFA's for normal NFAs. So, given an all-NFA $M = (\Sigma,Q_M,\delta_M,q_{M0},F_M)$, we can construct DFA $N = (\Sigma,Q_N,\delta_N,q_{N0},F_N)$. For completeness, let the function $\mathcal{N}_\varepsilon(S)$ denote the 'epsilon closure' as described in the book - the set of all nodes in $S$ and reachable by $S$ via epsilon transitions.
+
+\begin{align*}
+                              Q_N &=\; \mathbb{P}(Q_M) \\
+ \delta_M(q \in Q_N,a \in \Sigma) &=\; \{ q' \in Q_M | q' \in \mathcal{N}_\varepsilon(\delta(q,a)) \} \\
+                           q_{N0} &=\; \{q_{M0}\} \\
+                              F_N &=\; \{ S | S \subseteq F_M \} \\
+\end{align*}
+
+The proof is, again, very similar to the proof that NFAs recognize regular languages. This machine works exactly as an NFA, which as was shown in the book. The only difference is that the accepting states are those subsets of $Q_M$ that have only members in the final states of $M$, $F_M$. This exactly satisfies the conditions for an all-NFA.
+
+Therefore, the set of languages that all-NFAs accept is the set of regular languages.
 
 \end{document}
