@@ -198,19 +198,37 @@ Now we show this only accepts strings in $B$.
 This comes by construction as we skip every other transition. Therefore, to construct a string in $A$, we take the accepting path and insert the symbols we skipped, and therefore we have a string in $B$. So if a string is accepted we can find a string in $A$ that it corresponds to. And it cannot accept any string not in $B$ since we can construct this string from $A$. 
 
 \subsection*{Problem 6}
+Let $A/B = \{w|wx \in A \text{ for some } x \in B\}$. Show that if $A$ is regular and $B$ is any language, then $A/B$ is regular.
+
+Once we view this properly, the solution is intuitive. The idea is to include any state that could lead from $w$ into $x$ for some $x \in B$ and include it in the list of possible final states. In other words, we accept any string that is $w$ after we have removed some word from $B$. Note that this simple solution does not assume that iterating through all removals of $B$ to build this DFA is easy.
 
 \subsection*{Problem 7}
+\subsubsection*{(a)}
+Let $L = \{0^n 1^m 0^n | m,n \geq 0\}$. Let $p$ be the pumping lemma constant. Construct $s = 0^p 1 0^p$.
+Note $s \in L$ and let $s = xyz$ as given by the pumping lemma.
+Since $|xy| \leq p$, $y$ consists of only $0$'s. Choose $w = xy^2 z$, i.e., choose $i=2$. This has strictly more than $p$ zeros on the left and exactly $p$ zeros on the right. Thus, $w \notin L$ and hence, by contraction of PL, $s$ cannot be regular. This is a contradiction.
+
+\subsubsection*{(c)}
+Let $L = \{w|w \in \{0,1\}^* \text{ is not a palindrome}\}$. By closure over the set of regular languages, the complement of $L$, $L' = \{w|w \in \{0,1\}^* \text{ is a palindrome}\}$, must also be regular. We will prove $L'$ is not regular and hence, neither is $L$:\\
+Let $p$ be the pumping lemma constant. Construct $s = 0^p 1^p$.
+Note $s \in L$ and let $s = xyz$ as given by the pumping lemma.
+Since $|xy| \leq p$, $y$ consists of only $0$'s. Choose $w = xy^2 z$, i.e., choose $i=2$. This has strictly more than $p$ zeros (on the left) and exactly $p$ ones (on the right). Thus, $w$ cannot be a palindrome and therefore $w \notin L'$ and hence, by contraction of PL, $s$ cannot be regular. This is a contradiction.\\
+By contradiction of its complement the original claim holds.
 
 \subsection*{Problem 8}
 Claim: The relation $x \equiv_L y$, meaning $\forall z \in \{0,1\}^*, xz \in L \iff yz \in L$, is an equivalence relation.
 \begin{itemize}
 \item Reflexivity: Obviously $x$ is indistinguishable from $x$, since $\forall z \in \{0,1\}^*, xz = xz \implies xz \in L \iff zz \in L$.
 \item Symmetry: This follows from the if and only if of the definition of $\equiv_L$, which is itself is an equivalence relation. Meaning $(xz \in L \iff yz \in L) \iff (yz \in L \iff xz \in L)$
-\item Transitivity: This also follows from the if and only if of the definition. Suppose $\equiv_L$ was not transitive, then there are strings $x,y,w$ such that $\forall z' \in \{0,1\}^*, xz' \in L \iff yz' \in L$ and $yz \in L \iff wz \in L$ but $\exits z \in \{0,1\}^* xz \in L, wz \notin L$. However, we know that if $wz \notin L$, then $yz \notin L$, and if $yz \notin L$ then $xz \notin L$. This is a contradiction, saying $xz$ is both in $L$ and not in $L$. Therefore this relation is transitive.
+\item Transitivity: This also follows from the if and only if of the definition. Suppose $\equiv_L$ was not transitive, then there are strings $x,y,w$ such that $\forall z' \in \{0,1\}^*, xz' \in L \iff yz' \in L$ and $yz \in L \iff wz \in L$ but $\exists z \in \{0,1\}^* xz \in L, wz \notin L$. However, we know that if $wz \notin L$, then $yz \notin L$, and if $yz \notin L$ then $xz \notin L$. This is a contradiction, saying $xz$ is both in $L$ and not in $L$. Therefore this relation is transitive.
 \end{itemize}
 
 We have shown all properties of an equivalence relation, so $x \equiv_L y$ is an equivalence relation.
 
 \subsection*{Problem 9}
+We construct the new automaton by simulating the two original ones simultaneously:\\
+Let $M_1 = <Q_1, q_{0_1}, \Sigma_1, \delta_1, F_1>$ and $M_2 = <Q_2, q_{0_2}, \Sigma_2, \delta_2, F_2>$.\\
+Construct $M = <Q_1 \times Q_2, (q_{0_1}, q_{0_2}), \Sigma_1 \cup \Sigma_2, \delta = \{\{(a,b), (c,d)\}|(a,c) \in \delta_1 \text{ and } (b,d) \in \delta_2\}, F_1 \times F_2>$.\\
+Now, if $L_1$ accepts a string, then there exists paths that traverse from $q_{0_1}$ to a state in $F_1$. The similar holds for the second element with regards to $L_2$. The only way to traverse from $(q_{0_1}, q_{0_2})$ to an element in $F_1 \times F_2$ is to traverse on each field of the tuple. Therefore, this DFA only accepts strings that satisfies both original DFAs. Thus, this DFA accepts $L_1 \cap L_2$.
 
 \end{document}
