@@ -21,7 +21,7 @@
 \subsection*{Problem 1}
 
 \subsubsection*{(c)}
-Here the states $q_{ij}$ mean we have see $i$ (mod 2) $a$ symbols and $j$ b symbols (until 3 where we stop counting).
+Here the states $q_{ij}$ mean we have seen $i$ (mod 2) $a$ symbols and $j$ b symbols (until 3 where we stop counting).
 
 \begin{tikzpicture}[shorten >=1pt,node distance=2cm,on grid,auto] 
    \node[state,initial] (q_00)   {$q_{00}$}; 
@@ -52,7 +52,7 @@ Here the states $q_{ij}$ mean we have see $i$ (mod 2) $a$ symbols and $j$ b symb
 \end{tikzpicture}
 
 \subsubsection*{(g)}
-Here the states $q_{ij}$ mean we have see $i$ (mod 2) total symbols and $j$ (mod 2) $a$ symbols. The top row is reversed to make the transitions more clear.
+Here the states $q_{ij}$ mean we have seen $i$ (mod 2) total symbols and $j$ (mod 2) $a$ symbols. The top row is reversed to make the transitions more clear.
 
 \begin{tikzpicture}[shorten >=1pt,node distance=2cm,on grid,auto] 
    \node[state,initial,initial where=above] (q_00)   {$q_{00}$}; 
@@ -98,7 +98,7 @@ R_{21}^{1} &=\; R_{21}^0 \cup R_{21}^0 R_{11}^{0*} R_{11}^0 = b \cup (b a^{*} (a
 R_{22}^{1} &=\; R_{22}^0 \cup R_{21}^0 R_{11}^{0*} R_{12}^0 = a\cup\varepsilon \cup (b a^{*} b) \\
 R_{12}^{2} &=\; R_{12}^1 \cup R_{12}^1 R_{22}^{1*} R_{22}^1 = (b \cup (a\cup\varepsilon) a^{*} b) \cup ((b \cup ((a\cup\varepsilon) a^{*} b)) (a\cup\varepsilon \cup b a^{*} b)^{*} (a\cup\varepsilon \cup (b a^{*} b))) \\
 \end{align*}
-So the final regular expression is $R_{12}^{2} = (b \cup (a\cup\varepsilon) a^{*} b) \cup ((b \cup ((a\cup\varepsilon) a^{*} b)) (a\cup\varepsilon \cup b a^{*} b)^{*} (a\cup\varepsilon \cup (b a^{*} b)))$. The simpler regular expression is $a^{*} b a^{*} (b a^{*} b a^{*})^{*}$ (seen from inspection), gives the same thing.
+So the final regular expression is $R_{12}^{2} = (b \cup (a\cup\varepsilon) a^{*} b) \cup ((b \cup ((a\cup\varepsilon) a^{*} b)) (a\cup\varepsilon \cup b a^{*} b)^{*} (a\cup\varepsilon \cup (b a^{*} b)))$. The simpler regular expression is $a^{*} b a^{*} (b a^{*} b a^{*})^{*}$ (seen from inspection), which gives the same thing.
 
 \subsubsection*{(b)}
 We again use the same technique, this time in tabular form. The general formula is, again, 
@@ -210,9 +210,9 @@ Since $|xy| \leq p$, $y$ consists of only $0$'s. Choose $w = xy^2 z$, i.e., choo
 
 \subsubsection*{(c)}
 Let $L = \{w|w \in \{0,1\}^* \text{ is not a palindrome}\}$. By closure over the set of regular languages, the complement of $L$, $L' = \{w|w \in \{0,1\}^* \text{ is a palindrome}\}$, must also be regular. We will prove $L'$ is not regular and hence, neither is $L$:\\
-Let $p$ be the pumping lemma constant. Construct $s = 0^p 1^p$.
+Let $p$ be the pumping lemma constant. Construct $s = 0^p 1 0^p$.
 Note $s \in L$ and let $s = xyz$ as given by the pumping lemma.
-Since $|xy| \leq p$, $y$ consists of only $0$'s. Choose $w = xy^2 z$, i.e., choose $i=2$. This has strictly more than $p$ zeros (on the left) and exactly $p$ ones (on the right). Thus, $w$ cannot be a palindrome and therefore $w \notin L'$ and hence, by contraction of PL, $s$ cannot be regular. This is a contradiction.\\
+Since $|xy| \leq p$, $y$ consists of only $0$'s. Choose $w = xy^2 z$, i.e., choose $i=2$. This has strictly more than $p$ zeros on the left and exactly $p$ ones on the right. Thus, $w$ cannot be a palindrome and therefore $w \notin L'$ and hence, by contraction of PL, $s$ cannot be regular. This is a contradiction.\\
 By contradiction of its complement the original claim holds.
 
 \subsection*{Problem 8}
