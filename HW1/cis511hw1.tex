@@ -86,40 +86,40 @@ Here the states $q_{ij}$ mean we have see $i$ (mod 2) total symbols and $j$ (mod
 \subsection*{Problem 2}
 \subsubsection*{(a)}
 Using the method we did in class, we need to find $R_{ij}^k$ for $i,j \in \{0,1,2\}, k \in \{1,2\}$. The general formula is
-$ R_{i,j}^{k+1} = R_{i,j}^{k} \cup (R_{i,k+1}^{k} (R_{k+1,k+1}^{k})^{*}) R_{k+1,j}^{k} $
+$ R_{i,j}^{k+1} = R_{i,j}^{k} \cup (R_{i,k+1}^{k} (R_{k+1,k+1}^{k})^{*}) R_{k+1,j}^{k} $. For brevity any $\varepsilon$ inside a kleene star, as that is given.
 \begin{align*}
-R_{11}^{0} &=\; a \\
+R_{11}^{0} &=\; a\cup\varepsilon \\
 R_{12}^{0} &=\; b \\
 R_{21}^{0} &=\; b \\
-R_{22}^{0} &=\; a \\
-R_{11}^{1} &=\; R_{11}^0 \cup R_{11}^0 R_{11}^{0*} R_{11}^0 = a \cup (a a^{*} a) \\
-R_{12}^{1} &=\; R_{12}^0 \cup R_{11}^0 R_{11}^{0*} R_{12}^0 = b \cup (a a^{*} b) \\
-R_{21}^{1} &=\; R_{21}^0 \cup R_{21}^0 R_{11}^{0*} R_{11}^0 = b \cup (b a^{*} a) \\
-R_{22}^{1} &=\; R_{22}^0 \cup R_{21}^0 R_{11}^{0*} R_{12}^0 = a \cup (b a^{*} b) \\
-R_{12}^{2} &=\; R_{12}^1 \cup R_{12}^1 R_{22}^{1*} R_{22}^1 = (b \cup a a^{*} b) \cup ((b \cup (a a^{*} b)) (a \cup b a^{*} b)^{*} (a \cup (b a^{*} b))) \\
+R_{22}^{0} &=\; a\cup\varepsilon \\
+R_{11}^{1} &=\; R_{11}^0 \cup R_{11}^0 R_{11}^{0*} R_{11}^0 = a\cup\varepsilon \cup ((a\cup\varepsilon) a^{*} (a\cup\varepsilon)) \\
+R_{12}^{1} &=\; R_{12}^0 \cup R_{11}^0 R_{11}^{0*} R_{12}^0 = b \cup ((a\cup\varepsilon) a^{*} b) \\
+R_{21}^{1} &=\; R_{21}^0 \cup R_{21}^0 R_{11}^{0*} R_{11}^0 = b \cup (b a^{*} (a\cup\varepsilon)) \\
+R_{22}^{1} &=\; R_{22}^0 \cup R_{21}^0 R_{11}^{0*} R_{12}^0 = a\cup\varepsilon \cup (b a^{*} b) \\
+R_{12}^{2} &=\; R_{12}^1 \cup R_{12}^1 R_{22}^{1*} R_{22}^1 = (b \cup (a\cup\varepsilon) a^{*} b) \cup ((b \cup ((a\cup\varepsilon) a^{*} b)) (a\cup\varepsilon \cup b a^{*} b)^{*} (a\cup\varepsilon \cup (b a^{*} b))) \\
 \end{align*}
-So the final regular expression is $R_{12}^{2} = (b \cup a a^{*} b) \cup ((b \cup (a a^{*} b)) (a \cup b a^{*} b)^{*} (a \cup (b a^{*} b)))$. The simpler regular expression is $a^{*} b a^{*} (b a^{*} b a^{*})^{*}$ (seen from inspection), which this matches.
+So the final regular expression is $R_{12}^{2} = (b \cup (a\cup\varepsilon) a^{*} b) \cup ((b \cup ((a\cup\varepsilon) a^{*} b)) (a\cup\varepsilon \cup b a^{*} b)^{*} (a\cup\varepsilon \cup (b a^{*} b)))$. The simpler regular expression is $a^{*} b a^{*} (b a^{*} b a^{*})^{*}$ (seen from inspection), gives the same thing.
 
 \subsubsection*{(b)}
 We again use the same technique, this time in tabular form. The general formula is, again, 
-$ R_{i,j}^{k+1} = R_{i,j}^{k} \cup (R_{i,k+1}^{k} (R_{k+1,k+1}^{k})^{*}) R_{k+1,j}^{k} $
+$ R_{i,j}^{k+1} = R_{i,j}^{k} \cup (R_{i,k+1}^{k} (R_{k+1,k+1}^{k})^{*}) R_{k+1,j}^{k} $. For brevity any $\varepsilon$ inside a kleene star, as that is given.
 
 \begin{table}[h]
 \begin{tabular}{c|c|c|c|c}
-Reg. Exp./Level & 0             & 1                  & 2                                           & 3 \\
-$R_{11}$        &$\varepsilon$&$\varepsilon$         &$\varepsilon$                                &$(a\cup b)a^*b(ba^*b)^*a$  \\
-$R_{12}$        &$a \cup b$   &$a \cup b$            &$(a\cup b)\cup(a\cup b)a^*a$                 &(Not ending on final state)  \\
-$R_{13}$        &$\varnothing$&$\varepsilon$         &$(a\cup b)a^*b$                              &$(a\cup b)a^*b(ba^*b)^*ba^*b$  \\
-$R_{21}$        &$\varnothing$&$\varnothing$         &$\varnothing$                                &(Not starting at initial state) \\
-$R_{22}$        &$a$          &$a$                   &$a\cup aa^*a$                                &(Not starting at initial state) \\
-$R_{23}$        &$b$          &$b$                   &$b\cup aa^*b$                                &(Not starting at initial state) \\
-$R_{31}$        &$a$          &$a$                   &$a$                                          &(Not starting at initial state) \\
-$R_{32}$        &$b$          &$b \cup (b(a \cup b))$&$b\cup b(a\cup b)\cup((b\cup b(a\cup b))a^*a$&(Not starting at initial state) \\
-$R_{33}$        &$\varepsilon$&$\varepsilon$         &$b(a)^*b$                                    &(Not starting at initial state)  
+$R_{ij}$/Level & 0                & 1                    & 2                            & 3 \\
+$R_{11}$       &$\varepsilon$     &$\varepsilon$         &$\varepsilon$            &$\varepsilon\cup(a\cup b)a^*b(ba^*b)^*a$  \\
+$R_{12}$       &$a \cup b$        &$a \cup b$            &$(a\cup b)\cup(a\cup b)a^*a$  &(Not ending on final state)  \\
+$R_{13}$       &$\varnothing$     &$\varepsilon$         &$(a\cup b)a^*b$               &$(a\cup b)a^*b\cup(a\cup b)a^*b(ba^*b)^*ba^*b$  \\
+$R_{21}$       &$\varnothing$     &$\varnothing$         &$\varnothing$                 &(Not starting at initial state) \\
+$R_{22}$       &$a\cup\varepsilon$&$a\cup\varepsilon$    &$a\cup\varepsilon\cup (a\cup\varepsilon)a^*(a\cup\varepsilon)$  &(Not starting at initial state) \\
+$R_{23}$       &$b$               &$b$                   &$b\cup (a\cup\varepsilon)a^*b$                 &(Not starting at initial state) \\
+$R_{31}$       &$a$               &$a$                   &$a$                           &(Not starting at initial state) \\
+$R_{32}$       &$b$               &$b \cup (b(a \cup b))$&$b\cup b(a\cup b)\cup((b\cup b(a\cup b))a^*(a\cup\varepsilon)$&(Not starting at initial state) \\
+$R_{33}$       &$\varepsilon$     &$\varepsilon$         &$ba^*b$                     &(Not starting at initial state)  
 \end{tabular}
 \end{table}
 
-So the final expression is $ R_{11}^{3} \cup R_{13}^{3} = ((a\cup b)a^*b(ba^*b)^*a) \cup ((a\cup b)a^*b(ba^*b)^*ba^*b) $. This
+So the final expression is $ R_{11}^{3} \cup R_{13}^{3} = ((\varepsilon\cup(a\cup b)a^*b(ba^*b)^*a) \cup ((a\cup b)a^*b\cup(a\cup b)a^*b(ba^*b)^*ba^*b) $. This
 DFA does not have any intuitive regular expression that can be seen from inspection, so this technique is the best way to do it.
 
 \subsection*{Problem 3}
