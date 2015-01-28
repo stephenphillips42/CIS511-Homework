@@ -229,6 +229,6 @@ We have shown all properties of an equivalence relation, so $x \equiv_L y$ is an
 We construct the new automaton by simulating the two original ones simultaneously:\\
 Let $M_1 = <Q_1, q_{0_1}, \Sigma_1, \delta_1, F_1>$ and $M_2 = <Q_2, q_{0_2}, \Sigma_2, \delta_2, F_2>$.\\
 Construct $M = <Q_1 \times Q_2, (q_{0_1}, q_{0_2}), \Sigma_1 \cup \Sigma_2, \delta = \{\{(a,b), (c,d)\}|(a,c) \in \delta_1 \text{ and } (b,d) \in \delta_2\}, F_1 \times F_2>$.\\
-Now, if $L_1$ accepts a string, then there exists paths that traverse from $q_{0_1}$ to a state in $F_1$. The similar holds for the second element with regards to $L_2$. The only way to traverse from $(q_{0_1}, q_{0_2})$ to an element in $F_1 \times F_2$ is to traverse on each field of the tuple. Therefore, this DFA only accepts strings that satisfies both original DFAs. Thus, this DFA accepts $L_1 \cap L_2$.
+Now, if $L_1$ accepts a string, then there exists paths that traverse from $q_{0_1}$ to a state in $F_1$. The similar holds for the second element with regards to $L_2$. The only way to traverse from $(q_{0_1}, q_{0_2})$ to an element in $F_1 \times F_2$ is to traverse on each field of the tuple. Therefore, this DFA only accepts strings that satisfies both original DFAs. Thus, this DFA accepts $L_1 \cap L_2$, and only this.
 
 \end{document}
