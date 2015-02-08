@@ -1,0 +1,37 @@
+\documentclass[english]{article}
+
+\usepackage[latin9]{inputenc}
+\usepackage[letterpaper]{geometry}
+\geometry{verbose,tmargin=1in,bmargin=1in,lmargin=1in,rmargin=1in}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{tikz}
+\usetikzlibrary{automata,positioning}
+
+\tikzstyle{dir}=[->, very thick]
+\tikzstyle{circ}=[draw, circle, very thick]
+
+\title{CIS 511 Homework 1}
+\author{Stephen Phillips, Dagaen Golomb}
+\date{\today }
+
+
+\begin{document}
+\maketitle
+\subsection*{Problem 1}
+\subsubsection*{Part a}
+First we show that $A = \{ \mathbf{a}^m \mathbf{b}^n \mathbf{c}^n | m,n \ge 0 \}$ is context free. The grammar is as follows:
+\begin{align*}
+S \rightarrow & XY \\
+X \rightarrow & \varepsilon | aX \\
+Y \rightarrow & \varepsilon | bYc \\
+\end{align*}
+Clearly this generates only strings in the language, and every string in $A$ can be mapped to this by the number of generations of $X$ and $Y$ corresponding to $m$ and $n$ respectively. The language $B = \{ \mathbf{a}^n \mathbf{b}^n \mathbf{c}^m | m,n \ge 0 \}$ is almost identical:
+\begin{align*}
+S \rightarrow & XY \\
+X \rightarrow & \varepsilon | aXb \\
+Y \rightarrow & \varepsilon | cY \\
+\end{align*}
+With the proof that for this being the same as $A$. So these two languages are context free, however their intersection $C = A \cap B = \{ \mathbf{a}^n \mathbf{b}^n \mathbf{c}^n | n \ge 0 \}$ is not context free, as we showed in class.
+
+\end{document}
