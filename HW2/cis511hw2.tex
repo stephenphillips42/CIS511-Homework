@@ -60,7 +60,7 @@ Now we need prove this is correct, or in other words $L(G) \subseteq L$ and $L \
 
 % I am not sure how good this proof is, Dagaen. If you can make it better please do so!
 
-\section*{Problem 3}
+\subsection*{Problem 3}
 Show that adding the rule \(S \rightarrow SS\) fails to show that context free languages are closed under Kleene star.
 
 This fails because it is possible that the original grammar did not have $S$ able to go to a start symbol. For instance
@@ -70,25 +70,88 @@ Adding the rule $SS$ makes this:
 \[ S \rightarrow \; aS \; | \; ab \; | \; SS \]
 Which is the language \(L' = \{ x^m \mid x \in L, m > 0 \}\) where as \(L^* = L' \cup \{\varepsilon\}\). 
 
-\section*{Problem 4}
+\subsection*{Problem 4}
 Changing the grammar to new add new start symbol $S'$ and add to the production rules:
 \[ S' \rightarrow \; SS' \; | \; \varepsilon \]
 
 This makes an arbitrary number of strings in the language concatinated, including 0. 
 
-\section*{Problem 5}
+\subsection*{Problem 5}
 Find a context free grammar for the language \(L = \{ x | \textrm{\#a's is 2 times \#b's}\}\)
 \begin{align*}
-S \rightarrow & 
+S \rightarrow & aSbSa \;|\; bSaSa \;|\; aSaSb \;|\; SS \;|\; \varepsilon
 \end{align*}
 
-\section*{Problem 6}
+% Argument similar to the one in class about the equal number of a's and b's
 
+\subsection*{Problem 6}
+Show that \(L = \{ xy \mid x,y \in \{0,1\}^* |x| = |y|, x \neq y \}\) is context free
+
+The following grammar generates the language
 \begin{align*}
-S \rightarrow & 
+S \rightarrow & S_0 S_1 | S_1 S_0 | \varepsilon \\
+S_0 \rightarrow & B S_0 B | 0 \\
+S_1 \rightarrow & B S_1 B | 1 \\
+B \rightarrow & 0 | 1
 \end{align*}
 
+Proof:
+\begin{itemize}
+\item \(L(G) \subseteq L\). 
+\item \(L \subseteq L(G)\). 
+\end{itemize}
 
+\subsection*{Problem 7}
+% Implements the above grammar, so pretty straightforward. Needs an S_0 and S_1 state basically
+
+\subsection*{Problem 8}
+Show that the language \(L = \{a^i b^j \mid i \neq j, 2i \neq j\}\) is context free.
+
+% I am not sure this line of thinking will work... I can't figure it out
+Consider 3 cases (not including the cases where $i=0$ or $j=0$)
+\begin{enumerate}
+\item \(j < i\)
+\[ S \rightarrow aSb | aS | a \]
+
+\item \(i < j < 2i\)
+\[ S \rightarrow  S \] % Stuff goes here.
+
+\item \(2i < j\)
+\[ S \rightarrow aSbb | Sb | b \]
+
+\end{enumerate}
+
+\subsection*{Problem 9}
+\subsubsection*{Part a}
+Prove \(L = \{0^n 1^n 0^n 1^n \mid n \ge 0\}\) is not context free.
+
+Proof: Suppose not. Let $p$ be the pumping lemma constant. Consider the string $s = 0^p 1^p 0^p 1^p$. By the pumping lemma
+we have $s = uvxyz$ with $|vxy| \le p$ and $|vy| > 0$, and that \(\forall i \ge 0,\; uv^ixy^iz \in L\). By the first property
+we know $vxy$ cannot contain more than two symbols. If you let $i=2$ you have for any possible $s' = uv^2xy^2z$ that we have
+an uneven number of 0s and 1s in the section $v^2xy^2$ is in compared to the sections it is not in. This means $s' \notin L$.
+But by the pumping lemma $s' \in L$, a contradiction. Therefore $L$ is not context free.
+
+\subsubsection*{Part d}
+Prove \(L = \{t_1\#t_2\#\ldots\#t_k \mid k \ge 2, t_i \in \{0,1\}^* \textrm{ and } \exists i, j : i \neq j \land t_i = t_j \}\) is not context free.
+
+% OK actually the example I came up with won't work because you can have an arbitrary number of #'s and 
+% I don't see how you can rule out the possibility that v or y contain the # and repeat it with two
+% strings that happen to be the same...
+Proof: Suppose not. Let $p$ be the pumping lemma constant. % Consider the string $s = 0^p \# 1^p \# 0^p $. By the pumping lemma
+% we have $s = uvxyz$ with $|vxy| \le p$ and $|vy| > 0$, and that \(\forall i \ge 0,\; uv^ixy^iz \in L\). 
+
+
+\subsection*{Problem 10}
+If a CFG has $b$ symbols show that if there exists a string in the language that has a derivation of size greater than $2^b$ that
+the language is infinite. Assume that the CFG is in Chomsky normal form.
+
+Proof: Each step in a derivation represents a split in the parse tree. Therefore the derivation with at least $2^b + 1$ steps
+represents a parse tree with $2^b + 1$ steps. Therefore the height of this parse tree is $b+1$, since we are in Chomsky normal
+form, where each node has at most branching factor 2. And by the pigeonhole principle
+we have a repeated symbol on the path from the root start symbol to the furthest leaf node or terminal. Therefore like we did
+in the pumping lemma, we can repeat that symbol as many times as we wish to generate a new string in the language. Therefore we
+have a infinite language.
+ 
 
 
 \end{document}
