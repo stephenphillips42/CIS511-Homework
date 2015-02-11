@@ -137,8 +137,7 @@ Prove \(L = \{t_1\#t_2\#\ldots\#t_k \mid k \ge 2, t_i \in \{0,1\}^* \textrm{ and
 % OK actually the example I came up with won't work because you can have an arbitrary number of #'s and 
 % I don't see how you can rule out the possibility that v or y contain the # and repeat it with two
 % strings that happen to be the same...
-Proof: Suppose not. Let $p$ be the pumping lemma constant. % Consider the string $s = 0^p \# 1^p \# 0^p $. By the pumping lemma
-% we have $s = uvxyz$ with $|vxy| \le p$ and $|vy| > 0$, and that \(\forall i \ge 0,\; uv^ixy^iz \in L\). 
+Proof: Suppose not. Let $p$ be the pumping lemma constant. Consider the string $s = 0^p1^p \# 0^p1^p$. By the pumping lemma we have $s = uvxyz$ with $|vxy| \le p$ and $|vy| > 0$, and that \(\forall i \ge 0,\; uv^ixy^iz \in L\). We consider two cases. First, if $vxy$ does not contain the \#, then it lies entirely on one side. We can pump once to change the string on this side, therefore making it not equivalent to the other side. In this case the new string $uv^2xy^2z \notin L$. In the other case, assume $vxy$ does contain the \#. There are two subcases. First, if the \# is in $x$, then $u$ consists of only 1's and $y$ consists of only 0's. So we can pump once and the two sides are unequal, so $uv^2xy^2z \notin L$. If either $u$ or $y$ contain the \#, we can pump down to 0 and remove it, thereby getting a string with no \# that cannot be in the language. We have now covered all cases and subcases, and arrived at strings not in L using the pumping lemma. Hence, L is not context free.
 
 
 \subsection*{Problem 10}
