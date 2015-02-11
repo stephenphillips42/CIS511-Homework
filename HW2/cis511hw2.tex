@@ -150,17 +150,24 @@ it already here it all is.
 \subsection*{Problem 8}
 Show that the language \(L = \{a^i b^j \mid i \neq j, 2i \neq j\}\) is context free.
 
-% I am not sure this line of thinking will work... I can't figure it out
-Consider 3 cases (not including the cases where $i=0$ or $j=0$)
+This can be shown via the union of the CFLs that make up the 3 intervals of i and j who do not meet the constraint. Consider 3 cases:
 \begin{enumerate}
-\item \(j < i\)
-\[ S \rightarrow aSb | aS | a \]
-
-\item \(i < j < 2i\)
-\[ S \rightarrow  S \] % Stuff goes here.
+\item \(i > j\)
+\[ S \rightarrow aSb | aS^1 \]
+\[ S^1 \rightarrow aS^1 | \varepsilon \]
+This allows pairing i's and j's but must eventually follow $S^1$ to terminate which adds at least one extra a.
 
 \item \(2i < j\)
-\[ S \rightarrow aSbb | Sb | b \]
+\[ S \rightarrow aSbb | S^1 \]
+\[ S^1 \rightarrow S^1b | \varepsilon \]
+Similarly this allows pairing i's with 2 j's but must eventually follow $S^1$ to terminate which adds at least one extra b.
+
+\item \(i < j < 2i\)
+\[ S \rightarrow  aSb | aS^1b \]
+\[ S^1 \rightarrow  aS^1bb | abb \]
+This one takes some more thinking. It adds a's and b's equally, but then allows one to add some a's with 2 b's. Due to this, the closest one can get to equal is one less b than a's, or one can use many of the second production to get close to 1/2 from above (j/i) but not quite.
+
+Since CFL's are closed under union, we can union these 3 CFL's to show that L is context free.
 
 \end{enumerate}
 
