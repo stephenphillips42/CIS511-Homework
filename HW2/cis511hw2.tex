@@ -84,7 +84,7 @@ Find a context free grammar for the language \(L = \{ x | \textrm{\#a's is 2 tim
 S \rightarrow & aSbSa \;|\; bSaSa \;|\; aSaSb \;|\; SS \;|\; \varepsilon
 \end{align*}
 
-Proof by induction: Note strings of length 0 ($\varepsilon$) hold, since 0 = 2*0. The next valid strings are of length 3 and include only $aab, aba,$ and $baa$. So this holds for the smallest 4 possible strings. Now assume productions up to n have generated strings in L. For production n+1, we either add 0 a's and 0'b, hence keeping twice as many a's as b's, or we add 2 a's and 1 b. In the latter case, we still maintain that we have twice as many a's as b's. Therefore, this production only produces strings with twice as many a's as b's.
+Proof by induction: Note strings of length 0 ($\varepsilon$) hold, since 0 = 2*0. The next valid strings are of length 3 and include only $aab, aba,$ and $baa$. So this holds for the smallest 4 possible strings. Now assume productions up to n have generated strings in L. For production n+1, we either add 0 a's and 0'b, hence keeping twice as many a's as b's, or we add 2 a's and 1 b. In the latter case, we still maintain that we have twice as many a's as b's. Therefore, this production only produces strings with twice as many a's as b's. Note that since we include all permutations of the a's and b's and allow insertion between any two (including possibly with the empty string), this generates all such strings.
 
 \subsection*{Problem 6}
 Show that \(L = \{ xy \mid x,y \in \{0,1\}^* |x| = |y|, x \neq y \}\) is context free
