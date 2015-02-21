@@ -1,0 +1,75 @@
+\documentclass[english]{article}
+
+\usepackage[latin9]{inputenc}
+\usepackage[letterpaper]{geometry}
+\geometry{verbose,tmargin=1in,bmargin=1in,lmargin=1in,rmargin=1in}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{tikz}
+\usepackage{algpseudocode}
+\usetikzlibrary{automata,positioning}
+
+\tikzstyle{dir}=[->, very thick]
+\tikzstyle{circ}=[draw, circle, very thick]
+
+\title{CIS 511 Homework 3}
+\author{Stephen Phillips, Dagaen Golomb}
+\date{\today }
+
+
+\begin{document}
+\maketitle
+\subsection*{Problem 1}
+Show a Turing Machine that accepts the language
+ $L = \{ x \in {a,b,c}^* \mid 
+         \textrm{$x$ contains more $a$'s than $b$'s and $c$'s combined} \}$
+
+
+
+\subsection*{Problem 2}
+Show that a language is recognizable by a queueing automaton if and only if it
+is recognizable by a Turing Machine.
+% This is the basic idea of the proof, however, I am not sure that this is
+% rigorous enough to work
+\begin{itemize}
+\item ($ \impliedby $) If we have a Turing recognizable language, by
+  definition there must be a Turing Machine that recognizes it. Therefore if
+  we can make a queueing automaton replicate the actions of the Turing Machine
+  we have show that Turing recognizable languages are recognized by queueing
+  automata.
+
+  To do this, we simplfy the start and say that the queueing automaton pushes
+  a `start of tape' symbol followed by the entire string $x$ into its queue before
+  it starts computation. Now
+\end{itemize}
+
+\subsection*{Problem 3}
+Show that Turing recognizable languages are closed under Kleene Star.
+
+To do this we consider the Turing recognizable language $L$, and the machine
+that recognizes it $M$.
+On a given input $x$, there are a large but finite number of ways to split the
+string into substrings. For a given partition, we can test if all the strings
+are in $L$ using the following subroutine:
+\begin{algorithmic}
+\Function{A}{($x_1,x_2,\ldots,x_n$)}
+\For{$i = 1,\ldots,\infty$}
+	\State \For{$j = 1,\ldots,n$}
+		\State Simulate the next step of $M(x_j)$
+	\EndFor
+\EndFor
+\EndFunction 
+\end{algorithmic}
+
+\subsection*{Problem 4}
+
+\subsection*{Problem 5}
+
+\subsection*{Problem 6}
+
+\subsection*{Problem 7}
+
+\subsection*{Problem 8}
+
+
+\end{document}
