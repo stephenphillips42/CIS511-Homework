@@ -45,18 +45,18 @@ to work is to shift everything left so we know where the end of the tape
 is, like we did in class. 
 
 \subsection*{Problem 2}
-Show that a language is recognizable by a queueing automaton if and only if it
+Show that a language is recognizable by a queuing automaton if and only if it
 is recognizable by a Turing Machine.
 % This is the basic idea of the proof, however, I am not sure that this is
 % rigorous enough to work
 \begin{itemize}
 \item ($ \impliedby $) If we have a Turing recognizable language, by
   definition there must be a Turing Machine that recognizes it. Therefore if
-  we can make a queueing automaton replicate the actions of the Turing Machine
-  we have show that Turing recognizable languages are recognized by queueing
+  we can make a queuing automaton replicate the actions of the Turing Machine
+  we have show that Turing recognizable languages are recognized by queuing
   automata.
 
-  To do this, we simplfy the start and say that the queueing automaton pushes
+  To do this, we simplify the start and say that the queuing automaton pushes
   a `start of tape' symbol followed by the entire string $x$ into its queue before
   it starts computation. Now
 \end{itemize}
@@ -194,7 +194,7 @@ $1^*$. We start at production rules that have right hand sides with only
 terminals, specifically terminal strings with only $1$ in it. For every
 production rule we find with only $1$ in it, we mark the corresponding
 variable $V$ with the first kind of mark $\dot{V}$. If there are 
-variables that can generate termial strings but not ones in $1^*$,
+variables that can generate terminal strings but not ones in $1^*$,
 then we mark them with the second kind of symbol $\ddot{V}$. We denote
 the first group $S_1$ and the second group $S_2$. 
 
@@ -248,13 +248,13 @@ takes to accept $x$. The complete proof is as follows:
 	recognizer of $C$ as follows:
 \begin{algorithmic}
 \Function{$M_C$}{x}
-	\For{All $y$ in $\Sigma^*$ in Lexographic order}
+	\For{All $y$ in $\Sigma^*$ in Lexicographic order}
 		\State If $N_D(\langle x, y \rangle)$ accepts, accept 
 	\EndFor 
 \EndFunction
 \end{algorithmic}
 
-This loops forever for $x$ not in $C$, but as $N_D$ is guarranteed to halt
+This loops forever for $x$ not in $C$, but as $N_D$ is guaranteed to halt
 on every iteration of the loop, if $x \in C$ then we will find the $y$
 such that $\langle x,y \rangle \in D$ and halt and accept. This satisfies
 all that we need the decider $M_C$ to do, so we show that if such a
