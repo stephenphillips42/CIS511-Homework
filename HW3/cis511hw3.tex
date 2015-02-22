@@ -7,10 +7,15 @@
 \usepackage{amssymb}
 \usepackage{tikz}
 \usepackage{algpseudocode}
+\usepackage{booktabs}
 \usetikzlibrary{automata,positioning}
 
 \tikzstyle{dir}=[->, very thick]
 \tikzstyle{circ}=[draw, circle, very thick]
+
+\newcommand{\ol}[1]{ \overline{#1} }
+
+\newcommand{\ul}[1]{ \underline{#1} }
 
 \title{CIS 511 Homework 3}
 \author{Stephen Phillips, Dagaen Golomb}
@@ -24,7 +29,20 @@ Show a Turing Machine that accepts the language
  $L = \{ x \in {a,b,c}^* \mid 
          \textrm{$x$ contains more $a$'s than $b$'s and $c$'s combined} \}$
 
+We define the Turing Machine 
+$M = \langle Q,q_0,\Sigma,\Gamma,\delta,q_A, q_R \rangle $ as follows. First
+we define the alphabets:
 
+\[ \Sigma = \{a,b,c\} \]
+\[ \Gamma = \{a,b,c,\dot{a},\dot{b},\dot{c},
+          \ol{a},\ol{b},\ol{c},
+          \ul{a},\ul{b},\ul{c}, \sqcup \} \]
+
+The underline and overlined symbols' use will be described later. We will
+define the transition function, with the set $Q$ being implicitly defined
+by the states that appear in the transition function. First step for this
+to work is to shift everything left so we know where the end of the tape
+is, like we did in class. 
 
 \subsection*{Problem 2}
 Show that a language is recognizable by a queueing automaton if and only if it
