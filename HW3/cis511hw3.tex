@@ -236,6 +236,48 @@ finite time and therefore $M$ will as well.
 As $\bar{L}$ is recognizable, $L$ must be co-Turing recognizable. 
 
 \subsection*{Problem 7}
+Show that a language $C$ is Turing recognizable if and only if there exists a 
+decidable language $D$ such that
+$C = \{ x \mid \exists y : \langle x, y \rangle \in D\}$.
+
+The idea is that $y$ is the number of steps it takes for a recognizer of $C$
+takes to accept $x$. The complete proof is as follows:
+\begin{itemize}
+\item ($ \impliedby $) If $D$ is a decidable language, then there must exist
+	a Turing machine $N_D$ that decided the language. We construct the
+	recognizer of $C$ as follows:
+\begin{algorithmic}
+\Function{$M_C$}{x}
+	\For{All $y$ in $\Sigma^*$ in Lexographic order}
+		\State If $N_D(\langle x, y \rangle)$ accepts, accept 
+	\EndFor 
+\EndFunction
+\end{algorithmic}
+
+This loops forever for $x$ not in $C$, but as $N_D$ is guarranteed to halt
+on every iteration of the loop, if $x \in C$ then we will find the $y$
+such that $\langle x,y \rangle \in D$ and halt and accept. This satisfies
+all that we need the decider $M_C$ to do, so we show that if such a
+language $D$ exists, then $C$ is Turing recognizable.
+
+\item ($ \implies $) If $C$ is recognizable, then we can easily construct
+	such a language. Since $C$ is recognizable then there exists a
+	Turing Machine $N_C$ that recognizes the language. Then we construct
+	the corresponding $M_D$:
+\begin{algorithmic}
+\Function{$M_D$}{x,y}
+	\State Let $n = |y|$
+	\State Run $N_C(x)$ for $n$ steps
+	\State If $N_C(x)$ halted and accepted within $n$ steps, accept
+	\State Otherwise Reject
+\EndFunction
+\end{algorithmic}
+
+Since this only runs $N_C$ for $|y|$ steps, it will halt on every input. If
+$x \in C$ then that means $N_C$ must halt and accept after some number of 
+steps, say $m$. That means that $\forall y : |y| > m, M_D(x,y)$ accepts. 
+Therefore, the condition that there exists a $y$ is satisfied.
+\end{itemize}
 
 \subsection*{Problem 8}
 
