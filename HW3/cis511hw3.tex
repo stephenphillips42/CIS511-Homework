@@ -78,6 +78,22 @@ is recognizable by a Turing Machine.
   To do this, we simplify the start and say that the queuing automaton pushes
   a `start of tape' symbol followed by the entire string $x$ into its queue before
   it starts computation. Now
+  
+\item ($ \implies $) This is the simpler direction. It is intuitive that something as
+  powerful as a TM can recognize anything a queuing automaton can. We can prove this
+  by showing how a TM can simulate and queuing automaton.
+  
+  Given a description of a queuing automaton, a TM can simulate it as so: first, copy
+  the input to a tape and use another tape to hold the queue. For the queue tape we will
+  use the left end as the rear of the queue (where items are added) and the right end as
+  the front. We will use a special marker (or blank) to mark the left of the queue tape.
+  Now, we simply step over the input, always moving right since that is all
+  the queuing automaton can do. For each push operation we move all of the queue tape
+  right one spot (except the left end marker) and insert the new item in the created gap.
+  For each pull operation, we simple remove the right-most item and replace it with a blank.
+  
+  Since we can simulate a queuing automaton with a TM, it is clear any language recognizable
+  by a queuing automaton is also recognizable by a TM.
 \end{itemize}
 
 \subsection*{Problem 3}
