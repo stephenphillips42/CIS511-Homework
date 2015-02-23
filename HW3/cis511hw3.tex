@@ -331,8 +331,16 @@ Therefore, the condition that there exists a $y$ is satisfied.
 
 \subsection*{Problem 8}
 \begin{itemize}
-\item (a) blah
-\item (b) blah
+\item (a) 
+\item (b) Given a decider for $L$, we decide $L_{Kol}$ as follows: we take the
+  string under question as input. We then generate programs of increasing length
+  and use the decider for $L$ to determine if they halt given no input. If they do,
+  we run them. We then take their output and compare to the string in question. If
+  it matches, we have found a shortest program that outputs the given string. Knowing
+  its Kolmogorov complexity, its simple to assert whether it is Kolmogorov random or not.
+  Note that we know that we will eventually find a program that halts and outputs the
+  string in question, since there always exists the program that simply stores the
+  string and copies it to output when executed.
 \item (c) It follows from (a) and (b) that $L$ must be undecidable, since if
   it were we could use it to decide a problem that we know to be undecidable
   ($L_{Kol}$).
