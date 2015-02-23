@@ -19,7 +19,7 @@
 
 \title{CIS 511 Homework 3}
 \author{Stephen Phillips, Dagaen Golomb}
-\date{\today }
+\date{February 23, 2015}
 
 
 \begin{document}
@@ -34,15 +34,33 @@ $M = \langle Q,q_0,\Sigma,\Gamma,\delta,q_A, q_R \rangle $ as follows. First
 we define the alphabets:
 
 \[ \Sigma = \{a,b,c\} \]
-\[ \Gamma = \{a,b,c,\dot{a},\dot{b},\dot{c},
-          \ol{a},\ol{b},\ol{c},
-          \ul{a},\ul{b},\ul{c}, \sqcup \} \]
+\[ \Gamma = \{a,b,c,\dot{a},\dot{b},\dot{c}, \sqcup \} \]
 
-The underline and overlined symbols' use will be described later. We will
-define the transition function, with the set $Q$ being implicitly defined
-by the states that appear in the transition function. First step for this
-to work is to shift everything left so we know where the end of the tape
-is, like we did in class. 
+The dotted symbols' indicate marked symbols which we have already read and
+accounted for. We will define the transition function, with the set $Q$ being
+implicitly defined by the states that appear in the transition function. First
+step for this to work is to shift everything left so we know where the end of the 
+tape is, like we did in class. After this, we have a blank symbol ($\sqcup$) at each
+end of the tape.
+
+The following table describes what to do in each state given what is read from the
+tape. We provide a short description of the state's purpose to ease in understanding
+how the machine works.
+
+\begin{center}
+	\begin{tabular}{ l | c | c | c | c | c | c | c | r }
+		& a & b & c & $\dot{a}$ & $\dot{b}$ & $\dot{c}$ & $\sqcup$ & Description\\
+		\hline
+		$q_0$ & $q_0$,$a$,R & $q_1$,$\dot{b}$,L & $q_1$,$\dot{c}$,L & $q_0$,$\dot{a}$,R & $q_0$,$\dot{b}$,R & $q_0$,$\dot{c}$,R & $q_4$,$\sqcup$,L & Scanning for a $b$ or $c$, so far $a=b+c$. \\ \hline
+		$q_1$ &&&&&&&& Marked a $b$ or a $c$, return to left of tape.\\ \hline
+		$q_2$ &&&&&&&& Scan for an $a$ to balance $b$ and $c$'s.\\ \hline
+		$q_3$ &&&&&&&& Marked an $a$, return to left of tape.\\ \hline
+		$q_4$ &&&&&&&& No more $b$ or $c$'s, scan left for $a$'s.\\ \hline
+		$q_5$ &&&&&&&& \\ \hline
+		$q_6$ &&&&&&&& \\
+		\hline
+	\end{tabular}
+\end{center}
 
 \subsection*{Problem 2}
 Show that a language is recognizable by a queuing automaton if and only if it
