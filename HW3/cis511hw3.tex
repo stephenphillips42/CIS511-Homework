@@ -45,19 +45,20 @@ end of the tape.
 
 The following table describes what to do in each state given what is read from the
 tape. We provide a short description of the state's purpose to ease in understanding
-how the machine works.
+how the machine works. The starting state is $q_0$ and the final states are $q_{acc}$
+and $q_{rej}$ which halt and accept or reject, respectively.
 
 \begin{center}
 	\begin{tabular}{ l | c | c | c | c | c | c | c | r }
 		& a & b & c & $\dot{a}$ & $\dot{b}$ & $\dot{c}$ & $\sqcup$ & Description\\
 		\hline
 		$q_0$ & $q_0$,$a$,R & $q_1$,$\dot{b}$,L & $q_1$,$\dot{c}$,L & $q_0$,$\dot{a}$,R & $q_0$,$\dot{b}$,R & $q_0$,$\dot{c}$,R & $q_4$,$\sqcup$,L & Scanning for a $b$ or $c$, so far $a=b+c$. \\ \hline
-		$q_1$ &&&&&&&& Marked a $b$ or a $c$, return to left of tape.\\ \hline
-		$q_2$ &&&&&&&& Scan for an $a$ to balance $b$ and $c$'s.\\ \hline
-		$q_3$ &&&&&&&& Marked an $a$, return to left of tape.\\ \hline
-		$q_4$ &&&&&&&& No more $b$ or $c$'s, scan left for $a$'s.\\ \hline
-		$q_5$ &&&&&&&& \\ \hline
-		$q_6$ &&&&&&&& \\
+		$q_1$ & $q_1$,$a$,L & $q_1$,$b$,L & $q_1$,$c$,L & $q_1$,$\dot{a}$,L & $q_1$,$\dot{b}$,L & $q_1$,$\dot{c}$,L & $q_2$,$\sqcup$,R & Marked a $b$ or a $c$, return to left of tape.\\ \hline
+		$q_2$ & $q_3$,$\dot{a}$,L & $q_2$,$b$,R & $q_2$,$c$,R & $q_2$,$\dot{a}$,R & $q_2$,$\dot{b}$,R & $q_2$,$\dot{c}$,R & $q_{rej}$,$\sqcup$,R & Scan for an $a$ to balance $b$ and $c$'s.\\ \hline
+		$q_3$ & $q_3$,$a$,L & $q_3$,$b$,L & $q_3$,$c$,L & $q_3$,$\dot{a}$,L & $q_3$,$\dot{b}$,L & $q_3$,$\dot{c}$,L & $q_0$,$\sqcup$,R & Marked an $a$, return to left of tape.\\ \hline
+		$q_4$ & $q_{acc}$,$a$,L & $q_4$,$b$,L & $q_4$,$c$,L & $q_4$,$\dot{a}$,L & $q_4$,$\dot{b}$,L & $q_4$,$\dot{c}$,L & $q_{rej}$,$\sqcup$,R & No more $b$ or $c$'s, scan left for $a$'s.\\ \hline
+		$q_{rej}$ &&&&&&&& Rejecting state \\ \hline
+		$q_{acc}$ &&&&&&&& Accepting state \\
 		\hline
 	\end{tabular}
 \end{center}
