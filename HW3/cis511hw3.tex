@@ -331,7 +331,25 @@ Therefore, the condition that there exists a $y$ is satisfied.
 
 \subsection*{Problem 8}
 \begin{itemize}
-\item (a) 
+\item (a) Let $L$ be the language of Kolmogorov random strings, i.e. $L = \{x : \text{x is Kolmogorov random}\}$.\\
+  Recall that a string is Kolmogorov random if its Kolmogorov complexity
+  $K(s) \ge n-2$, where $n$ = length($s$).\\
+  Now, suppose $L$ is decidable, so there exists a program $P$ that decides it. Recall that
+  greater than 1/2 of all strings on a particular length are Kolmogorov random. Let $x$ be the
+  first Kolmogorov random string of length $2^{|P|}$. The following program $Q$ prints $x$:
+  \begin{algorithmic}
+  	\Function{$Q$}{}
+  	\State Enumerate string of length $2^{|P|}$
+  	\For{Each string $y$ in the enumeration}
+  	\State Run P(y)
+  	\State if P(y) = YES, halt and accept
+  	\EndFor
+  	\EndFunction
+  \end{algorithmic}
+  Now, the size of program $Q$ is the size of program $P$, plus a constant amount of code
+  to form the enumeration and looping. Thus, $|Q| = |P| + c << 2^{|P|}$.\\
+  But $x$ is Kolmogorov random, and we have just created a program with length $|Q| < length(x)-2 = 2^{|P|}-2$, so $x$ is actually not Kolmogorov random. This is a contradiction. Therefore, $P$ cannot exist.\\
+  Thus, if no decider for $L$ can exist, then $L$ must be undecidable.
 \item (b) Given a decider for $L$, we decide $L_{Kol}$ as follows: we take the
   string under question as input. We then generate programs of increasing length
   and use the decider for $L$ to determine if they halt given no input. If they do,
