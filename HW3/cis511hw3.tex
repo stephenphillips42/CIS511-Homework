@@ -66,18 +66,32 @@ and $q_R$ which halt and accept or reject, respectively.
 \subsection*{Problem 2}
 Show that a language is recognizable by a queuing automaton if and only if it
 is recognizable by a Turing Machine.
-% This is the basic idea of the proof, however, I am not sure that this is
-% rigorous enough to work
 \begin{itemize}
 \item ($ \impliedby $) If we have a Turing recognizable language, by
   definition there must be a Turing Machine that recognizes it. Therefore if
   we can make a queuing automaton replicate the actions of the Turing Machine
-  we have show that Turing recognizable languages are recognized by queuing
-  automata.
+  we have shown that Turing recognizable languages are recognized by queuing
+  automata. We will show that a queuing automaton can simulate a TM by explaining
+  how it can simulate a step in a TM.
 
   To do this, we simplify the start and say that the queuing automaton pushes
-  a `start of tape' symbol followed by the entire string $x$ into its queue before
-  it starts computation. Now
+  a 'start of tape' symbol followed by the entire string $x$, followed
+  by a blank symbol, into its queue before computation begins. Now we just need to
+  show how to perform each action a TM could perform. It always reads a symbol and
+  writes a symbol. The two main differences is whether it moves left or right after
+  a particular step. We will fix our simulated TM head at front of the queue (where
+  items are removed).
+  
+  When we perform an action that moves left, we pull the read symbol from the queue
+  and push the written symbol to the queue. This effectively moves all symbols right
+  one spot which simulates the head moving left one.
+  
+  When we perform an action that moves right, we must do some more work. First, we mark the
+  symbol currently at the end of the queue. We then pull the read symbol from
+  the queue and push the written symbol to the queue. Now, we continually pull the symbol
+  at the front of the queue and reinsert it to the rear. Once we reach our marked symbol we
+  remove the mark. We have now shifted all symbols left one, simulating a right move by the
+  head.
   
 \item ($ \implies $) This is the simpler direction. It is intuitive that something as
   powerful as a TM can recognize anything a queuing automaton can. We can prove this
@@ -89,8 +103,9 @@ is recognizable by a Turing Machine.
   the front. We will use a special marker (or blank) to mark the left of the queue tape.
   Now, we simply step over the input, always moving right since that is all
   the queuing automaton can do. For each push operation we move all of the queue tape
-  right one spot (except the left end marker) and insert the new item in the created gap.
-  For each pull operation, we simple remove the right-most item and replace it with a blank.
+  right one spot (except the left end marker) and insert the new item in the created gap right
+  after the left end marker. For each pull operation, we simply remove the right-most item
+  and replace it with a blank.
   
   Since we can simulate a queuing automaton with a TM, it is clear any language recognizable
   by a queuing automaton is also recognizable by a TM.
