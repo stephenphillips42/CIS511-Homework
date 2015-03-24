@@ -1,0 +1,51 @@
+\documentclass[english]{article}
+
+\usepackage[latin9]{inputenc}
+\usepackage[letterpaper]{geometry}
+\geometry{verbose,tmargin=1in,bmargin=1in,lmargin=1in,rmargin=1in}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{tikz}
+\usepackage{algpseudocode}
+\usepackage{booktabs}
+\usetikzlibrary{automata,positioning}
+
+\tikzstyle{dir}=[->, very thick]
+\tikzstyle{circ}=[draw, circle, very thick]
+
+\newcommand{\ol}[1]{ \overline{#1} }
+
+\newcommand{\ul}[1]{ \underline{#1} }
+
+\title{CIS 511 Homework 3}
+\author{Stephen Phillips, Dagaen Golomb}
+\date{February 23, 2015}
+
+
+\begin{document}
+\maketitle
+\subsection*{Problem 1}
+We want to show that finding if a Turing Machine has a \textit{useless state}
+is Turing Decidable. We formulate this as a language:
+\[ L = \{ \langle M, q \rangle \mid
+   q \in Q(M), \;
+   \forall s \in \Sigma^* M(q) \, M\textrm{ does not enter }q \} \]
+
+Now we reduce this to $A_{TM}$ to show that it is undecidable.
+
+
+
+\subsection*{Problem 2}
+\subsection*{Problem 3}
+\subsection*{Problem 4}
+\subsection*{Problem 5}
+\subsection*{Problem 6}
+\subsection*{Problem 7}
+
+
+
+\end{document}
+
+
+
+
