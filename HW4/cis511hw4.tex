@@ -27,16 +27,71 @@ is Turing Decidable. We formulate this as a language:
    q \in Q(M), \;
    \forall s \in \Sigma^* M(q) \, M\textrm{ does not enter }q \} \]
 
-Now we reduce this to $A_{TM}$ to show that it is undecidable. We build a Turing
-Machine in the following manner:
+Now we reduce this to $A_{TM}$ to show that it is undecidable. First as usual, 
+we suppose toward contradiction that there was a decider of this language, which
+we will denote $D$. We build a Turing Machine in the following manner:
+\begin{algorithmic}
+\Function{N}{$\langle M, x \rangle$}
+\State Build the description for the following machine
+	\Function{A}{$y$}
+		\State Ignore input $y$
+		\State Simulate $M(x)$, and output what it outputs
+	\EndFunction
+\State Simulate $D(\langle A, q_A \rangle)$, where $q_A$ is the accept state
+		of $D$, and output what it outputs
+\EndFunction 
+\end{algorithmic}
 
-
-
+If $M(x)$ halts and accepts, then we eventually reach the accept state of $A$,
+by construction. Also by construction we never reach the accept state if $M(x)$
+loops or if it rejects. Since $D$ is a decider, and building the machine
+description takes finite time, $N$ always halts. Therefore $N$ accepts if and
+only if $D$ accepts, which in turn accepts if and only if
+$\langle M,x \rangle \in A_{TM}$. Therefore, $N$ decides $A_{TM}$, a
+contradiction. 
 
 \subsection*{Problem 2}
 \subsection*{Problem 3}
+We want to show that the intersection of two context free languages is
+undecidable using $A_{TM}$. 
+
 \subsection*{Problem 4}
 \subsection*{Problem 5}
+Show that the language
+\[ ISO = \{ \langle G, H \rangle \} \mid
+		\textrm{$G$ and $H$ are isomorphic graphs} \]
+is in NP.
+
+To do this we need to show a verifier $V$ for $ISO$. As one might expect, the
+certificate for a member of the language $\langle G, H \rangle$ is the
+isomorphism $\phi: V_G \rightarrow V_H, v \rightarrow \phi(v)$ between them.
+The size of such an isomorphism would be about $2n$ where $n$ is the number of
+nodes in $G$ and $H$, so it polynomial in the size of $G$ and $H$. 
+We also need to check that the verifier $V$ using this runs in polynomial
+time. A simple algorithm to use this is the following:
+
+\begin{algorithmic}
+\Function{V}{$\langle G, H \rangle$,$\phi$}
+\State If the number of nodes or edges in $G$ differ from the number of nodes
+		or edges in $H$, reject
+\For{Nodes $v$ in $G$}
+	\State If the number of edges $(v,u)$ in $G$ differ from the number of
+			edges $(\phi(v),u')$ in $H$, reject
+	\For{Edges $(v,u)$ in $G$}
+		\State If $(\phi(v),\phi(u))$ is not in $H$, reject
+	\EndFor
+\EndFor
+\State Accept
+\EndFunction 
+\end{algorithmic}
+
+By assering that the size of the graphs are the same, that each node $v$ has
+the same degree as $\phi(v)$ and maps to the corresponding vertices, we have
+shown that the isomorphism is correct. If there is no isomorphism then at
+least one of these tests will fail. Therefore $V(\langle G, H \rangle,y)$
+will accept for some input $y$ if and only if there is an isomorphism between
+$G$ and $H$
+
 \subsection*{Problem 6}
 \subsection*{Problem 7}
 
