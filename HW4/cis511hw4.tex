@@ -87,8 +87,57 @@ Thus, we have shown that there must exist a language that is a subset of $\{1\}^
 be decided.
 
 \subsection*{Problem 3}
-We want to show that the intersection of two context free languages is
+We want to show that the intersection of two context-free languages is
 undecidable using $A_{TM}$. 
+
+We modify the statment of $A_{TM}$ that $\langle M,w \rangle$ accepts to use
+the computation paths of $M$. Specifically we use the following format:
+\begin{equation*}
+L = \{ w_1 w_1^\mathcal{R} \#  \ldots \# w_n w_n^\mathcal{R} \mid
+        w_1, \ldots, w_n \textrm{ is the computation path of $M$ on $w$} \}
+\end{equation*}
+
+Now we want to form this as the intersection of context-free languages. It
+is possible to build a PDA to accept strings where $w_i$ follows from
+$w_{i-1}$. The idea is that we push the symbols of $w_{i-1}$ on the stack and
+mark the state/head and the letter that follows. Then we check to make sure
+that $ w_{i-1} = w_i^\mathcal{R}$ except for around the state/head
+non-deterministically check what rule it applied in the surrounding symbols.
+So we ensure that $w_{i-1}^\mathcal{R} \# w_{i}$ gives a valid step in the
+computation of the Turing machine. It is also easy to make the PDA check that
+the first part $w_1$ is the starting state and that $w_n$ is in the accepting
+state.
+
+The problem is that once we've done this we can't ensure that the terms between
+the $\#$ symbols are the same. Meaning the language we have decided is this:
+\begin{equation*}
+L_1 = \{ w_1 w_2^\mathcal{R} \# w_2 w_3^\mathcal{R} \# \ldots
+			\# w_{n-1} w_n^\mathcal{R} \mid
+		w_{i-1} \textrm{ follows from } w_i,\; w_1 \textrm{ initial state}, \;
+		w_n \textrm{ final state} \}
+\end{equation*}
+
+In this we have no way to guarantee that $\# w_{i-1}^\mathcal{R} w_i \#$
+terms are in the form $\# w^\mathcal{R} w \#$, which was required by our
+original language. This is easy to see using the pumpling lemma for
+context-free languages. Fortunately for us though there is another context free
+language that does ensure this:
+
+\begin{equation*}
+L = \{ w_1 w_1^\mathcal{R} \#  \ldots \# w_n w_n^\mathcal{R} \mid
+        w_i \in \Sigma^* \}
+\end{equation*}
+This is can easily be shown to be context free. In fact here is the CFG:
+\begin{align*}
+& S \rightarrow A\#S | A \\
+& A \rightarrow X A X | XX \\
+& X \rightarrow \sigma \in \Sigma
+\end{align*}
+So what we want is the intersection of these two languages. If it is empty then
+there is no valid computational path on $\langle M,w \rangle$. So if we could
+decide if the intersection of two context-free languages was empty, we could
+decide $A_{TM}$, a contradiction. Therefore determining the if the intersection
+between two context-free languages is empty is undecidable.
 
 \subsection*{Problem 4}
 \begin{description}
