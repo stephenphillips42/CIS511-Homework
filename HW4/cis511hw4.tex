@@ -91,6 +91,30 @@ We want to show that the intersection of two context free languages is
 undecidable using $A_{TM}$. 
 
 \subsection*{Problem 4}
+\begin{description}
+	\item[(a)] This can be done using dynamic programming.\\
+	Start by defining $T[q_0,0] = 1$ to account for the only string of length zero ($\epsilon$).
+	All other $T[q,0]$ for $q \ne q_0$ are set to 0.\\
+	Now, we can compute any $T[q,i]$ for $i \ge 1$ as follows:
+	\begin{algorithmic}
+		\State $T[q,i] \gets 0$
+		\ForAll{$q' \in Q$}
+			\ForAll{$a \in \Sigma$}
+			\If{$\{(q', a) \to q\} \in \delta$}
+				\State $T[q,i] \gets T[q,i] + T[q',i-1]$
+			\EndIf
+			\EndFor
+		\EndFor
+	\end{algorithmic}
+	
+	\item[(b)] The answer to the problem is the number of strings of length $n$ that are accepted
+	by $M$, i.e. the ones that end in the accept state. So the answer is $\sum_{f \in F}T[f,n]$.
+	
+	\item[(c)] The algorithm runs in time polynomial in the \emph{value} of $n$, since increasing
+	$n$ by one requires $O(|Q| \cdot |\Sigma|)$ more steps. However, the value of $n$ can be
+	encoded in log($n$) bits so the running time in the \emph{size} of the input is exponential.
+\end{description}
+
 \subsection*{Problem 5}
 Show that the language
 \[ ISO = \{ \langle G, H \rangle \} \mid
