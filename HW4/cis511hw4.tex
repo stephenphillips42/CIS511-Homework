@@ -15,7 +15,7 @@
 
 \title{CIS 511 Homework 4}
 \author{Stephen Phillips, Dagaen Golomb}
-\date{February 23, 2015}
+\date{February 24, 2015}
 
 
 \begin{document}
@@ -161,7 +161,8 @@ between two context-free languages is empty is undecidable.
 	
 	\item[(c)] The algorithm runs in time polynomial in the \emph{value} of $n$, since increasing
 	$n$ by one requires $O(|Q| \cdot |\Sigma|)$ more steps. However, the value of $n$ can be
-	encoded in log($n$) bits so the running time in the \emph{size} of the input is exponential.
+	encoded in log($n$) bits so the running time in the \emph{size} of the input is exponential
+	since 1 extra bit can hold up to a number double in value.
 \end{description}
 
 \subsection*{Problem 5}
@@ -193,7 +194,7 @@ time. A simple algorithm to use this is the following:
 \EndFunction 
 \end{algorithmic}
 
-By assering that the size of the graphs are the same, that each node $v$ has
+By asserting that the size of the graphs are the same, that each node $v$ has
 the same degree as $\phi(v)$ and maps to the corresponding vertices, we have
 shown that the isomorphism is correct. If there is no isomorphism then at
 least one of these tests will fail. Therefore $V(\langle G, H \rangle,y)$
@@ -201,6 +202,40 @@ will accept for some input $y$ if and only if there is an isomorphism between
 $G$ and $H$.
 
 \subsection*{Problem 6}
+We can create an algorithm that reduces the length of $b$ by 1 bit every iteration,
+therefore running in time polynomial in $b$. Let $b=b_1b_2...b_n$ (in binary representation).
+The algorithm works as follows: We keep a running total of the current "answer" according to
+the bits we have seen so far. If the bit is not set we need to double our running answer (and
+modulo it) since it is evidence that the string is one bit longer which means twice as large.
+On the other hand, if the bit is set we must do the above but also multiply by $a$ since this
+is adding $a^i$ for bit $i$. This is known as "exponentiation by squaring."
+
+The algorithm is as follows:
+\begin{algorithmic}
+	\State $x \gets 1$
+	\State $l = $ length($b$)
+	\For{$i = 1 ... l$}
+		\If{$b_i = 0$}
+			\State $x \gets x^2$ (mod $p$)
+		\Else
+			\State $x \gets a \cdot x^2$ (mod $p$)
+		\EndIf
+	\EndFor \\
+	
+	\If{$x = c$ (mod $p$)}
+		\State accept
+	\Else
+		\State reject
+	\EndIf
+\end{algorithmic}
+
+Note that the for loop runs $O(l)$, the \emph{length} of b, times.
+In the loop, each multiplication can be done in time $O(n^2)$ in the length of the numbers using
+naive methods, and even faster using sophisticated ones.
+The same goes for division, being computable in $O(n^2)$ in the length of the numbers.
+Due to the above, modulo can be implemented in $O(n^2)$ as well.
+Therefore, the entire algorithm runs in polynomial time, in particular in $O(n^3)$ of the
+length of the longest number.
 
 \subsection*{Problem 7}
 For a language $A$ to be NP-complete, it needs to satisfy two conditions:
@@ -242,11 +277,11 @@ rejected, and we know $M_{SAT}$ accepts if and only if
 $f^{SAT}_L(x) \in \textrm{SAT}$. We also know this runs in polynomial time,
 since $f^{SAT}_L(x)$ runs in polynomial time and $M_{SAT}(y)$ runs in 
 polynomial time, and the rest are just a constant number of operations.
-Therefore this is a polynomial time map from aribtrary language $L$ to 
+Therefore this is a polynomial time map from arbitrary language $L$ to 
 arbitrary language $A$ and so.
 
 Since $A$ satisfies both the conditions to be NP-complete, and $A$ was 
-any language in $P$ (with the two exceptions), then any langauge in P is
+any language in $P$ (with the two exceptions), then any language in P is
 NP-complete if $\textrm{P} = \textrm{NP}$.
 
 
