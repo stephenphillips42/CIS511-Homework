@@ -51,6 +51,41 @@ $\langle M,x \rangle \in A_{TM}$. Therefore, $N$ decides $A_{TM}$, a
 contradiction. 
 
 \subsection*{Problem 2}
+Note that the set of decidable languages is countable. If a language is decidable,
+there must exist a Turing Machine which decides it. We proved in class the set of
+TMs is countable (via enumerating descriptions of all combinations of bits starting
+at length 1 and increasing onward). The set of TM's that decides subset languages in $\{1\}^*$
+is a subset of all TM's and is therefore countable. Thus, the set of decidable languages
+in $\{1\}^*$ is countable.
+
+Now, using diagonalization, we can prove that the set of all languages of subsets of $\{1\}^*$
+is uncountable. This will show that there must be some language that is a subset of $\{1\}^*$ that
+is not decidable since the set of TM's deciding languages of this form is countable.
+
+Picture the set of languages that are a subset of $\{1\}^*$ as a bit string with 0 if they include
+a particular string in $\{1\}^*$ and 0 otherwise. Suppose this set of languages is countable.
+Then we could list all such languages as so:\\
+
+\begin{tabular}{c|c|c|c|c}
+	$\epsilon$ & 1 & 11 & 111 & ... \\ \hline
+	0 & 0 & 0 & 0 & \\ \hline
+	1 & 0 & 0 & 0 & \\ \hline
+	0 & 1 & 0 & 0 & \\ \hline
+	1 & 1 & 0 & 0 & \\ \hline
+	$\vdots$ &&&& $\ddots$ \\
+\end{tabular}
+
+Now create the languages where if the $i^{\text{th}}$ entry in the $i^{\text{th}}$ row
+is one, that string is not in the language. Conversely, if it is a zero it is in the language.
+Now, we have created a language that is clearly composed of substrings of $\{1\}^*$, so it
+should be in the table. However, this language conflicts with every table entry, by construction,
+by at least one string. But this table is supposed to list all languages of the given form.
+This is a contradiction. Therefore, the set of languages that are a subset of $\{1\}^*$
+is uncountable.
+
+Thus, we have shown that there must exist a language that is a subset of $\{1\}^*$ that cannot
+be decided.
+
 \subsection*{Problem 3}
 We want to show that the intersection of two context free languages is
 undecidable using $A_{TM}$. 
