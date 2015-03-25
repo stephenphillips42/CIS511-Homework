@@ -31,7 +31,7 @@ Now we reduce this to $A_{TM}$ to show that it is undecidable. First as usual,
 we suppose toward contradiction that there was a decider of this language, which
 we will denote $D$. We build a Turing Machine in the following manner:
 \begin{algorithmic}
-\Function{N}{$\langle M, x \rangle$}
+\Function{$N$}{$\langle M, x \rangle$}
 \State Build the description for the following machine
 	\Function{A}{$y$}
 		\State Ignore input $y$
@@ -71,7 +71,7 @@ We also need to check that the verifier $V$ using this runs in polynomial
 time. A simple algorithm to use this is the following:
 
 \begin{algorithmic}
-\Function{V}{$\langle G, H \rangle$,$\phi$}
+\Function{$V$}{$\langle G, H \rangle$,$\phi$}
 \State If the number of nodes or edges in $G$ differ from the number of nodes
 		or edges in $H$, reject
 \For{Nodes $v$ in $G$}
@@ -90,11 +90,56 @@ the same degree as $\phi(v)$ and maps to the corresponding vertices, we have
 shown that the isomorphism is correct. If there is no isomorphism then at
 least one of these tests will fail. Therefore $V(\langle G, H \rangle,y)$
 will accept for some input $y$ if and only if there is an isomorphism between
-$G$ and $H$
+$G$ and $H$.
 
 \subsection*{Problem 6}
-\subsection*{Problem 7}
 
+\subsection*{Problem 7}
+For a language $A$ to be NP-complete, it needs to satisfy two conditions:
+\begin{itemize}
+\item $B \in \textrm{NP}$
+\item $\forall L \in \textrm{NP}, A \le_p B$
+\end{itemize}
+We want to show that if $\textrm{P} = \textrm{NP}$, then every language
+$A \in P$ exept $A = \varnothing$ and $A = \Sigma^*$ is NP-complete. 
+
+The basic idea is that since we have polynomial time algorithms for all
+NP-complete problems like SAT, we map each language to SAT, solve it, then map
+that output to appropriate inputs for the original language, i.e. use
+$L \le_p \textrm{SAT}$ then that $L \le_p \textrm{SAT}$ (kind of a hack). 
+
+We know that $\textrm{SAT} \in NP$, and since by assumption
+$\textrm{P} = \textrm{NP}$, $\textrm{SAT} \in P$. That means there must be a
+polynomial time turing machine $M_{SAT}$ that accepts SAT in polynomial time.
+We also know that SAT is NP-complete, so for every language $L \in \textrm{NP}$
+there is a polynomial time function $f^{SAT}_L : \Sigma^* \rightarrow \Sigma^*$
+that satisfies $w \in L \iff f(w) \in \textrm{SAT}$.
+
+Given a language $A \in \textrm{P}$ besides the empty and full languages, we 
+know there exists strings $s_{acc} \in A$ and $s_{rej} \notin A$. Since
+we assume $\textrm{P} = \textrm{NP}$, we know $A \in \textrm{NP}$. Using all of
+this we create the following map for a language $L \in \textrm{P}$:
+\begin{algorithmic}
+\Function{$f^A_L$}{$x$}
+\State Let $y = f^{SAT}_L(x)$
+\State Simulate $M_{SAT}(y)$, and record its output
+\State If it accepted, output $s_{acc}$
+\State Otherwise, output $s_{rej}$
+\EndFunction 
+\end{algorithmic}
+
+This machine satisfies $x \in L \iff f^A_L(x) \in A$ since it outputs 
+$s_{acc} \in A$ if $M_{SAT}$ accepted and $s_{rej} \in A$ if $M_{SAT}$
+rejected, and we know $M_{SAT}$ accepts if and only if
+$f^{SAT}_L(x) \in \textrm{SAT}$. We also know this runs in polynomial time,
+since $f^{SAT}_L(x)$ runs in polynomial time and $M_{SAT}(y)$ runs in 
+polynomial time, and the rest are just a constant number of operations.
+Therefore this is a polynomial time map from aribtrary language $L$ to 
+arbitrary language $A$ and so.
+
+Since $A$ satisfies both the conditions to be NP-complete, and $A$ was 
+any language in $P$ (with the two exceptions), then any langauge in P is
+NP-complete if $\textrm{P} = \textrm{NP}$.
 
 
 \end{document}
