@@ -8,7 +8,10 @@
 \usepackage{tikz}
 \usepackage{algpseudocode}
 \usepackage{booktabs}
-\usetikzlibrary{automata,positioning}
+
+\usepackage{verbatim}
+\usepackage{tkz-berge}
+\usetikzlibrary{automata,positioning,arrows,shapes,petri,topaths}
 
 \tikzstyle{dir}=[->, very thick]
 \tikzstyle{circ}=[draw, circle, very thick]
@@ -23,6 +26,9 @@
 \subsection*{Problem 1}
 
 \subsection*{Problem 2}
+\subsection*{Part a}
+
+\subsection*{Part b}
 
 \subsection*{Problem 3}
 
@@ -107,11 +113,57 @@ words we just reduced SAT to minimizing an NFA. Therefore if $P\neq NP$ then the
 for this.
 
 \subsection*{Problem 7}
+We want to show that the problem of designating directions to edges of an undirected graph $G$ so that a given subset
+$C$ will have all nodes in it have either indegree 0 or outdegree 0, and all other nodes have indegree at least one
+is NP-complete. We reduce SAT to this. And example of the mapping is show for the formula
+$\phi(x_1,x_2,x_3,x_4) = (x_1 + \bar{x_2} + x_3)(\bar{x_1} + x_2 + x_4)(\bar{x_2} + \bar{x_3} + \bar{x_4})$
 
+
+\begin{tikzpicture}[shorten >=1pt,node distance=1.75cm,on grid,auto] 
+   \node[state]           (c_1)                 {$c_1$}; 
+   \node[state]           (c_2)  [right=of c_1] {$c_2$}; 
+   \node[state]           (c_3)  [right=of c_2] {$c_3$}; 
+   \node[state,accepting] (x_1)  [below=of c_1] {$x_1$};
+   \node[state,accepting] (x_2)  [right=of x_1] {$x_2$};
+   \node[state,accepting] (x_3)  [right=of x_2] {$x_3$};
+   \node[state,accepting] (x_4)  [right=of x_3] {$x_4$};
+   \node[state,accepting] (x_1b) [below=of x_1] {$\bar{x_1}$};
+   \node[state,accepting] (x_2b) [below=of x_2] {$\bar{x_2}$};
+   \node[state,accepting] (x_3b) [below=of x_3] {$\bar{x_3}$};
+   \node[state,accepting] (x_4b) [below=of x_4] {$\bar{x_4}$};
+    \path[-] 
+    (x_1)  edge             node {} (x_1b)
+           edge             node {} (c_1)
+    (x_1b) edge             node {} (c_2)
+    (x_2)  edge             node {} (x_2b)
+           edge             node {} (c_2)
+    (x_2b) edge             node {} (c_1)
+           edge             node {} (c_3)
+    (x_3)  edge             node {} (x_3b)
+           edge             node {} (c_1)
+    (x_3b) edge[bend right] node {} (c_3)
+    (x_4)  edge             node {} (x_4b)
+           edge             node {} (c_2)
+    (x_4b) edge             node {} (c_3);
+\end{tikzpicture}
+
+The highlighted nodes are the ones in $C$. 
+
+We want to create such a graph for any SAT formula $\phi$. So in words the procedure is for every variable $x_i$,
+create nodes $x_i$ and $\bar{x_i}$, and for every clause $c_j$ create a node $c_j$. Connect the node $x_i$
+(or $\bar{x_i}$) to node $c_j$ if the variable $x_i$ (or $\bar{x_i}$) is in the clause $c_j$. Also create an edge
+between nodes $x_i$ and $\bar{x_i}$. Place all the nodes $x_i$ and $\bar{x_i}$ into $C$. 
+
+This graph has a solution the the direction problem if and only if the formula $\phi$ has a solution. If the
+formula $\phi$ has a solution, select the true literals $x_i$/$\bar{x_i}$ as the `all outdegree' or 0 indegree nodes
+in $C$, and the complement pair as the `all indegree' or 0 outdegree ones. Since only the pairs of literal nodes
+$x_i$/$\bar{x_i}$ are connected in $C$, this does not lead to an inconsistency. If this is the satisfying assignment
+then we should have at least one edge into each clause node $c_j$. Similarly, if we have such an assignment of edge
+directions, we can reconstruct the satisfying assignment, since only one in each of the pairs of literal nodes
+$x_i$/$\bar{x_i}$ has `all outdegree' we can set those literals to true, and we know by the direction assignment
+that every clause will have one corresponding true literal inside it. Therefore, this graph has a solution to the
+problem if and only if the the formula has a satisfying assignment. 
 
 
 \end{document}
-
-
-
 
