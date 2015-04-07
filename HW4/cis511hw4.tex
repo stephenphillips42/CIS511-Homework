@@ -25,7 +25,7 @@ We want to show that finding if a Turing Machine has a \textit{useless state}
 is Turing Decidable. We formulate this as a language:
 \[ L = \{ \langle M, q \rangle \mid
    q \in Q(M), \;
-   \forall s \in \Sigma^* M(q) \, M\textrm{ does not enter }q \} \]
+   \forall s \in \Sigma^* M(q) \, \textrm{does not enter }q \} \]
 
 Now we reduce this to $A_{TM}$ to show that it is undecidable. First as usual, 
 we suppose toward contradiction that there was a decider of this language, which
@@ -33,12 +33,12 @@ we will denote $D$. We build a Turing Machine in the following manner:
 \begin{algorithmic}
 \Function{$N$}{$\langle M, x \rangle$}
 \State Build the description for the following machine
-	\Function{A}{$y$}
+	\Function{$A$}{$y$}
 		\State Ignore input $y$
 		\State Simulate $M(x)$, and output what it outputs
 	\EndFunction
 \State Simulate $D(\langle A, q_A \rangle)$, where $q_A$ is the accept state
-		of $D$, and output what it outputs
+		of $A$, and output what it outputs
 \EndFunction 
 \end{algorithmic}
 
@@ -111,9 +111,9 @@ state.
 The problem is that once we've done this we can't ensure that the terms between
 the $\#$ symbols are the same. Meaning the language we have decided is this:
 \begin{equation*}
-L_1 = \{ w_1 w_2^\mathcal{R} \# w_2 w_3^\mathcal{R} \# \ldots
+L_1 = \{ w_1 w_2^\mathcal{R} \# w_3 w_4^\mathcal{R} \# \ldots
 			\# w_{n-1} w_n^\mathcal{R} \mid
-		w_{i-1} \textrm{ follows from } w_i,\; w_1 \textrm{ initial state}, \;
+		w_{i+1} \textrm{ follows from } w_i,\; w_1 \textrm{ initial state}, \;
 		w_n \textrm{ final state} \}
 \end{equation*}
 
@@ -167,8 +167,8 @@ between two context-free languages is empty is undecidable.
 
 \subsection*{Problem 5}
 Show that the language
-\[ ISO = \{ \langle G, H \rangle \} \mid
-		\textrm{$G$ and $H$ are isomorphic graphs} \]
+\[ ISO = \{ \langle G, H \rangle \mid
+              \textrm{$G$ and $H$ are isomorphic graphs} \} \]
 is in NP.
 
 To do this we need to show a verifier $V$ for $ISO$. As one might expect, the
@@ -203,7 +203,8 @@ $G$ and $H$.
 
 \subsection*{Problem 6}
 We can create an algorithm that reduces the length of $b$ by 1 bit every iteration,
-therefore running in time polynomial in $b$. Let $b=b_1b_2...b_n$ (in binary representation).
+therefore running in time polynomial in $b$. Let $b=b_1b_2...b_n$ (in binary representation,
+where $b_i$ is the $i^{th}$ lowest order bit).
 The algorithm works as follows: We keep a running total of the current "answer" according to
 the bits we have seen so far. If the bit is not set we need to double our running answer (and
 modulo it) since it is evidence that the string is one bit longer which means twice as large.
@@ -256,7 +257,7 @@ $\textrm{P} = \textrm{NP}$, $\textrm{SAT} \in P$. That means there must be a
 polynomial time turing machine $M_{SAT}$ that accepts SAT in polynomial time.
 We also know that SAT is NP-complete, so for every language $L \in \textrm{NP}$
 there is a polynomial time function $f^{SAT}_L : \Sigma^* \rightarrow \Sigma^*$
-that satisfies $w \in L \iff f(w) \in \textrm{SAT}$.
+that satisfies $w \in L \iff f^{SAT}_L(w) \in \textrm{SAT}$.
 
 Given a language $A \in \textrm{P}$ besides the empty and full languages, we 
 know there exists strings $s_{acc} \in A$ and $s_{rej} \notin A$. Since
