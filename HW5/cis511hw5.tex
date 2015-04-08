@@ -27,8 +27,94 @@
 
 \subsection*{Problem 2}
 \subsection*{Part a}
+We know that $CNF_2 = \{\langle \phi \rangle \mid \phi \textrm{ is a satisfiable CNF formula with each 
+variable appears at most 2 times}\}$ is in $P$ since we can make an algorithm for it.
+
+\begin{algorithmic}
+\Function{$M$}{$\phi$}
+  \State Check that all variables $x_i$ appear at most twice as 
+  \State Create $\psi$, a modifiable copy of $\phi$
+  \State Create bit vector $b$ for the final assignment
+  \ForAll{$i \in \{1, \ldots, n\}$}
+    \If{There is one clause left}
+      \State Accept
+    \ElsIf{There is one variable left}
+      \If{Clauses $x_i$ and $\bar{x_i}$ both are in $\phi$}
+        \State Reject
+      \Else
+        \State Accept
+      \EndIf
+    \ElsIf{the literal $x_i$ appears once}
+      \State $\psi \leftarrow \psi(x_i=1)$ (and simplify $\psi$)
+    \ElsIf{the literal $\bar{x_i}$ appears once}
+      \State $\psi \leftarrow \psi(x_i=0)$
+    \ElsIf{the literal $x_i$ appears twice}
+      \State $\psi \leftarrow \psi(x_i=1)$
+    \ElsIf{the literal $bar{x_i}$ appears twice}
+      \State $\psi \leftarrow \psi(x_i=0)$
+    \Else
+      \State Combine the clauses with $x_i$ and $\bar{x_i}$ in $\psi$ by creating a new clause with all the
+              other literals in the two clauses together
+    \EndIf
+  \EndFor
+\EndFunction 
+\end{algorithmic}
+
+We need to show that this works, so we analyze each case in the if else chain in the loop. We show
+that each branch either makes the problem smaller, or solves the problem.
+\begin{itemize}
+\item If there is only one clause, we can set any literal in the clause to true and we have satisfied the problem,
+        so we are done.
+\item If there is one variable $x$ left, since we know each variable only appears twice, it is unsatisfiable if and 
+        only if the clauses left are $x$ and $\bar{x}$, so we accept accordingly.
+\item If a literal $x$ only appears once in the formula, we can just it to true and get rid of the clause that the
+        the literal is in. Similarly, if the literal $\bar{x}$ is in only once, we can just set it to false to get
+        rid of the clause
+\item If the literal $x$ appears twice in the formula (or equivalently $\bar{x}$), then we can like before just set
+        the literal to the appropriate value and get rid of the clauses that it occupies.
+\item The tricky case - if $x$ and $\bar{x}$ both appear in different clauses. Note however that:
+        \[ (x + a)(\bar{x} + b) \iff \bar{x}a + xb + ab \iff a + b \]
+      Since we can choose $x$ accordingly. So it is satisifiable if and only if $a + b$ is true, so we combine
+      the clauses and continue.
+\end{itemize}
+
+Since we reduce the problem by at least one variable each time, with simple boolean formula manipulations
+in each step, we can run this in polynomial time in the number of clauses and variables. Therefore, this is
+in $P$.
 
 \subsection*{Part b}
+We show that $CNF_3 = \{\langle \phi \rangle \mid \phi \textrm{ is a satisfiable CNF formula with each 
+variable appears at most 3 times}\}$ is NP-Complete. We show how to change an instance of $3SAT$ to
+an instance in $CNF_3$.
+
+Given a $3SAT$ we can increase the number of variables to make sure that no one variable shows more than 3 times. 
+Let us say a variable $x$ shows up in $k$ clauses. Then we create new variables $y_1,\ldots,y_k$. We create a `chain'
+of implications:
+\[y_1 \implies y_2 \implies y_3 \implies \ldots \implies y_n \implies y_1\]
+This means all these variables must have the same value. In CNF form, using $x \implies y \iff (\bar{x} + y)$,
+this would be 
+\[(\bar{y_1} + y_2)(\bar{y_2} + y_3) \ldots (\bar{y_n} + y_1)\]
+Then for each clause that $x$ is in, we use one of the $y_i$ variables. Now each of the $y_i$ variables appears
+twice in the `chain' of implications, and once in the actual clauses, meaning it appears a total of 3 times. 
+
+We illustrate with an example, using the simple example with only the variable $x$:
+\begin{align*}
+& (x + a_1 + b_1)(x + a_2 + b_2)(\bar{x} + a_2 + b_2)(\bar{x} + a_4 + b_4) \\
+\end{align*}
+
+This becomes with these new rules:
+\begin{align*}
+& (\bar{y_1} + y_2)(\bar{y_2} + y_3)(\bar{y_3} + y_4)(\bar{y_4} + y_1) \\
+& (y_1 + a_1 + b_1)(y_2 + a_2 + b_2)(\bar{y_3} + a_2 + b_2)(\bar{y_4} + a_4 + b_4) \\
+\end{align*}
+
+Now we need to make sure this is still a polynomial time transformation. Say there are $n$ variables and $m$
+clauses. In the worse case, a variable appears in every clause. This means we add $m$ variables to the equation,
+and $m$ clauses for the `chain' of implications. If this happens for each variable we get $mn$ new clauses, and
+$mn$ new variables, given $O(mn)$ sized problem, which is just a quadratic blow up in this size of the formula,
+and therefore still a polynomial time transformation. Therefore if we can solve $CNF_3$ we can solve $3SAT$ which
+we know to be NP-complete. Since checking a boolean formula is in NP since we can use the assignment as a 
+certificate, this is NP-complete
 
 \subsection*{Problem 3}
 
