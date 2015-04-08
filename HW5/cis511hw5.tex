@@ -24,6 +24,19 @@
 \begin{document}
 \maketitle
 \subsection*{Problem 1}
+The NP-Completeness proof for SUBSET-SUM works because the input is encoded in log($n$) bits, so
+solving the problem takes time exponential in the number of bits. Since complexity is measured
+against the size of the input, this places SUBSET-SUM $\in$ NP.
+
+However, for UNARY-SSUM, each number occupies length equal to its value. Therefore, we can convert
+each number into binary which can be done in polynomial time via successive division by two and
+checking any remainder (which becomes the next significant digit). This runs in polynomial time.
+We do this for each number. Now, we have the classic SUBSET-SUM problem. We can solve this in a
+brute-force manner by simulating the non-deterministic TM.
+
+This simulation takes time exponential
+in the length of the [created] input, which is log($n$) of the original input. Therefore, this
+runs in time polynomial ($O(e^{log(n)}) = O(n)$) of the original input. Thus, UNARY-SSUM $\in$ P.
 
 \subsection*{Problem 2}
 \subsection*{Part a}
@@ -117,6 +130,9 @@ we know to be NP-complete. Since checking a boolean formula is in NP since we ca
 certificate, this is NP-complete
 
 \subsection*{Problem 3}
+We can reduce SAT to the Mine Consistency Problem.
+
+
 
 \subsection*{Problem 4}
 If $P = NP$, then there exists a polynomial time decider $D$ for $SAT$ runs in polynomial time. From this we can
