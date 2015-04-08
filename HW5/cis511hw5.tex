@@ -132,7 +132,20 @@ certificate, this is NP-complete
 \subsection*{Problem 3}
 We can reduce SAT to the Mine Consistency Problem.
 
+Let us define a variable $x_{ijk}$ that, for each $0 \le k \le 8$, represents if the cell at row $i$
+and column $j$ has value $k$. Note in this notation we are using $k = 0$ to represent the presence
+of a mine.
 
+The reduction works as follows. For all $i,j,k$, we create a conjunction
+($x_{ijk} \cdot \bar{x_{ijk'}}$)
+for each $k' \neq k$. This enforces that each cell cannot be assigned two different values. We also 
+produce the disjunction ($x_{ij0} + x_{ij1} + ... + x_{ij8}$) for each $i,j$ pair. This means each cell 
+must be assigned some value. These expressions in total enforce each cell to have exactly one value.
+
+Next we will enforce the rules of Minesweeper. For each $x_{ijk}$ we enumerate all positional
+combinations of $k$ mines around the number and build expressions to match them. Note for $x_{ij0}$
+we will not place any restrictions since the expressions for the numbered cells will enforce the
+game rules.
 
 \subsection*{Problem 4}
 If $P = NP$, then there exists a polynomial time decider $D$ for $SAT$ runs in polynomial time. From this we can
