@@ -133,24 +133,46 @@ certificate, this is NP-complete
 Let the Mine Consistency Problem (MCP) be as defined in the problem:\\
 $\{G : G \text{ has a satisfiable assignment of mines}\}$.
 
-This is clearly in P: given a graph with mines and numbers, it is easy to check if this it is a
-consistent and accurate labeling. Now we will show MCP $\in$ NP by reducing 3-SAT to MCP. This will
-show MCP is at least as hard as SAT and hence NP-complete.
+This is clearly in NP: given a graph with mines and numbers, it is quick and easy to check if this it 
+is a consistent and accurate labeling. Now we will show MCP $\in$ NP by reducing 3-SAT to MCP.
+This will show MCP is at least as hard as SAT and hence NP-complete.
 
 Given a 3-SAT Boolean formula we can construct an instance of MCP as follows:
 
 We create a node for each literal (both it and its negation) and for each clause. We connect each
 pair of literals (its positive and negation) to another node for the pair labeled with value 1. This
-is to ensure only one can be a mine (selected).
+is to ensure exactly one can be a mine (selected), corresponding to the value of the literal.
 
+Each clause node has an edge to each node corresponding to literals it contains. We mark each clause
+node with a value of 3. However, this alone would force all literals to be true. To alleviate this,
+we create two extra nodes for each clause and attach them to the clause node. This allows a place for
+mines to sit if only 1 or 2 literals in the clause are true. Note that at least one literal must be 
+true since only 2 mines can be occupied by these extra nodes.
 
+Note that this construction is quick, requiring one pass of the input and creating a number of 
+nodes linear in the number of literals and clauses.
+
+We claim there is a consistent mine placement on this graph $\iff$ the Boolean formula is satisfiable.
 
 \begin{itemize}
 	\item $\implies$
-	
+	Given a consistent mine assignment, set each literal to true if its corresponding node has a mine.
+	Now by construction a literal and its negation cannot be true at the same time, so this axiom holds.
+	Also, since a clause node is neighbored by 3 mines, and only 2 can be held by non-literal nodes, at
+	least one literal node in each clause has a mine (and is therefore true), so each clause is true.
+	Thus, the Boolean formula used to create this graph is satisfiable.
 	\item $\Longleftarrow$
-	
+	Given a satisfiable Boolean function, place a mine on each literal-node if is true in the
+	satisfying assignment and false otherwise. Note that each node labeled "1" only has one mine
+	next to it, since the equation is satisfiable and therefore either a literal or its negation must
+	be true (exclusively). Also, each node marked with a "3" (for each clause) can have 3 mines next
+	to it. Since the equation is satisfiable at least one literal node is a mine (and up to 3 can be). 
+	If there are only 1 or 2 true literals in the clause fill 2 or 1 of the "extra" nodes, 
+	respectively, for the clause with a mine. Now each clause node has 3 mines next to it. Therefore, 
+	this graph has a consistent mine placement.
 \end{itemize}
+
+Thus, MCP is NP-Complete.
 
 \subsection*{Problem 4}
 If $P = NP$, then there exists a polynomial time decider $D$ for $SAT$ runs in polynomial time. From this we can
