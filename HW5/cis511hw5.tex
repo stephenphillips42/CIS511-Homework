@@ -130,7 +130,12 @@ we know to be NP-complete. Since checking a boolean formula is in NP since we ca
 certificate, this is NP-complete
 
 \subsection*{Problem 3}
-We can reduce SAT to the Mine Consistency Problem.
+Let the Mine Consistency Problem (MCP) be as defined in the problem:\\
+$\{G : G \text{ has a satisfiable assignment of mines}\}$.
+
+This is clearly in P: given a graph with mines and numbers, it is easy to check if this it is a
+consistent and accurate labeling. Now we will show MCP $\in$ NP by reducing MCP to SAT. This will
+show MCP is at least as hard as SAT and hence in NP.
 
 Let us define a variable $x_{ijk}$ that, for each $0 \le k \le 8$, represents if the cell at row $i$
 and column $j$ has value $k$. Note in this notation we are using $k = 0$ to represent the presence
@@ -145,7 +150,17 @@ must be assigned some value. These expressions in total enforce each cell to hav
 Next we will enforce the rules of Minesweeper. For each $x_{ijk}$ we enumerate all positional
 combinations of $k$ mines around the number and build expressions to match them. Note for $x_{ij0}$
 we will not place any restrictions since the expressions for the numbered cells will enforce the
-game rules.
+game rules. For example, for $k = 1$ for some $i,j$, we create the conjunction
+($x_{ij1} \cdot x_{(i+1)j1} \cdot \bar{x_{(i+1)j1}} \cdot ...$) with the remaining adjacent cells
+being not literals. This is an example of a valid configuration for a cell marked as 1 with only
+a mine in the position below it. Note that these expressions are similar for edge nodes with the
+omission of cells that do not exist (making the construction even easier). Note that although
+combinations in general grow combinatorially, we are only dealing with specific combinations which
+are a constant number of expressions each. Therefore, this operation still only takes constant time
+for each cell. Finally, we "or" each combination together to allow any combination of $k$ mines
+around the cell.
+
+We now assert that the above Boolean formula is satisfiable iff there is a consistent mine placement.
 
 \subsection*{Problem 4}
 If $P = NP$, then there exists a polynomial time decider $D$ for $SAT$ runs in polynomial time. From this we can
