@@ -160,7 +160,23 @@ are a constant number of expressions each. Therefore, this operation still only 
 for each cell. Finally, we "or" each combination together to allow any combination of $k$ mines
 around the cell.
 
-We now assert that the above Boolean formula is satisfiable iff there is a consistent mine placement.
+We now assert that the above Boolean formula is satisfiable $\iff$ there is a consistent mine
+placement.
+
+\begin{itemize}
+	\item $\implies$
+	Given a satisfiable assignment to the above formula, pick the true $x_{ij0}$'s for each $i,j$.
+	By construction, no other $x_{ijk}$ value is true, and each adjacent numbered cell must account
+	for this mine. Therefore, this mine is placed in a valid position and consistent with the game
+	rules. Since this holds for each mine, this is a consistent mine placement.
+	\item $\Longleftarrow$
+	Given a consistent mine placement, set each mine position's $x_{ij0}$ to true and set the literals
+	for other values of $k$ to false. For each numbered cell set the corresponding $x_{ijk}$ to true
+	(if it is marked with $k$) and set the other literals over $i,j$ to false. Now each cell has
+	a distinct assignment so the first part of the construction is true. Also, since this is a
+	consistent marking, the second expression is true by construction as well. Therefore, the
+	conjunction of these two are true and the formula is satisfiable.
+\end{itemize}
 
 \subsection*{Problem 4}
 If $P = NP$, then there exists a polynomial time decider $D$ for $SAT$ runs in polynomial time. From this we can
