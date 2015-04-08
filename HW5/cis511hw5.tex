@@ -213,6 +213,27 @@ the decider $D$, which runs polynomial time for some polynomial $p(n+m)$. There 
 total this takes $O(nm p(n+m))$ time, which is still a polynomial.
 
 \subsection*{Problem 5}
+Let P = NP. We have seen that 3COL $\in$ NP, so by our assumption that P = NP there is a polynomial
+time algorithm that decides if a graph is 3-colorable. Call this L.
+
+Note that by a similar construction as the original decidability proof, we can show that deciding if
+a graph is colorable given an already partially-colored graph (i.e., with some nodes given colors
+already) is NP-complete (and by our assumption, in P). The idea that for already assigned colors
+we can force their presence in the end solution by only allowing them to be assigned the color they
+have been given. The proof is otherwise the same.
+
+We will use L to 3-color a graph when given a 3-colorable graph. Given a graph, choose a node and
+give it a color. Ask L if the graph is 3-colorable. If if is, move on to another uncolored node. If
+it is not, try the another color. If any node fails for all colors, the graph cannot be 3-colored.
+Otherwise, all nodes will eventually be colored and the graph will have a valid 3-coloring.
+
+Now, for each node we must try at most 3 colors, and once a node is visited it is not recolored (note
+we do not need to worry about recoloring since color assignments can be permuted between the node
+groups for each color given one valid assignment). So each node takes a constant amount of time to
+process. Since 3COL in in P by assumption, L runs in polynomial time. Finally, we visit each node
+once, so this is linear in the number of nodes. Therefore, this whole process runs in polynomial time.
+
+Thus, if P = NP, we can 3-color a graph in polynomial time.
 
 \subsection*{Problem 6}
 We want to, given a CNF formula $\phi$, construct an NFA that accepts all nonaccepting configurations of $\phi$.
