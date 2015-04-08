@@ -134,48 +134,22 @@ Let the Mine Consistency Problem (MCP) be as defined in the problem:\\
 $\{G : G \text{ has a satisfiable assignment of mines}\}$.
 
 This is clearly in P: given a graph with mines and numbers, it is easy to check if this it is a
-consistent and accurate labeling. Now we will show MCP $\in$ NP by reducing MCP to SAT. This will
-show MCP is at least as hard as SAT and hence in NP.
+consistent and accurate labeling. Now we will show MCP $\in$ NP by reducing 3-SAT to MCP. This will
+show MCP is at least as hard as SAT and hence NP-complete.
 
-Let us define a variable $x_{ijk}$ that, for each $0 \le k \le 8$, represents if the cell at row $i$
-and column $j$ has value $k$. Note in this notation we are using $k = 0$ to represent the presence
-of a mine.
+Given a 3-SAT Boolean formula we can construct an instance of MCP as follows:
 
-The reduction works as follows. For all $i,j,k$, we create a conjunction
-($x_{ijk} \cdot \bar{x_{ijk'}}$)
-for each $k' \neq k$. This enforces that each cell cannot be assigned two different values. We also 
-produce the disjunction ($x_{ij0} + x_{ij1} + ... + x_{ij8}$) for each $i,j$ pair. This means each cell 
-must be assigned some value. These expressions in total enforce each cell to have exactly one value.
+We create a node for each literal (both it and its negation) and for each clause. We connect each
+pair of literals (its positive and negation) to another node for the pair labeled with value 1. This
+is to ensure only one can be a mine (selected).
 
-Next we will enforce the rules of Minesweeper. For each $x_{ijk}$ we enumerate all positional
-combinations of $k$ mines around the number and build expressions to match them. Note for $x_{ij0}$
-we will not place any restrictions since the expressions for the numbered cells will enforce the
-game rules. For example, for $k = 1$ for some $i,j$, we create the conjunction
-($x_{ij1} \cdot x_{(i+1)j1} \cdot \bar{x_{(i+1)j1}} \cdot ...$) with the remaining adjacent cells
-being not literals. This is an example of a valid configuration for a cell marked as 1 with only
-a mine in the position below it. Note that these expressions are similar for edge nodes with the
-omission of cells that do not exist (making the construction even easier). Note that although
-combinations in general grow combinatorially, we are only dealing with specific combinations which
-are a constant number of expressions each. Therefore, this operation still only takes constant time
-for each cell. Finally, we "or" each combination together to allow any combination of $k$ mines
-around the cell.
 
-We now assert that the above Boolean formula is satisfiable $\iff$ there is a consistent mine
-placement.
 
 \begin{itemize}
 	\item $\implies$
-	Given a satisfiable assignment to the above formula, pick the true $x_{ij0}$'s for each $i,j$.
-	By construction, no other $x_{ijk}$ value is true, and each adjacent numbered cell must account
-	for this mine. Therefore, this mine is placed in a valid position and consistent with the game
-	rules. Since this holds for each mine, this is a consistent mine placement.
+	
 	\item $\Longleftarrow$
-	Given a consistent mine placement, set each mine position's $x_{ij0}$ to true and set the literals
-	for other values of $k$ to false. For each numbered cell set the corresponding $x_{ijk}$ to true
-	(if it is marked with $k$) and set the other literals over $i,j$ to false. Now each cell has
-	a distinct assignment so the first part of the construction is true. Also, since this is a
-	consistent marking, the second expression is true by construction as well. Therefore, the
-	conjunction of these two are true and the formula is satisfiable.
+	
 \end{itemize}
 
 \subsection*{Problem 4}
