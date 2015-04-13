@@ -1,0 +1,58 @@
+\documentclass[english]{article}
+
+\usepackage[latin9]{inputenc}
+\usepackage[letterpaper]{geometry}
+\geometry{verbose,tmargin=1in,bmargin=1in,lmargin=1in,rmargin=1in}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{tikz}
+\usepackage{algpseudocode}
+\usepackage{booktabs}
+
+\usepackage{verbatim}
+\usepackage{tkz-berge}
+\usetikzlibrary{automata,positioning,arrows,shapes,petri,topaths}
+
+\tikzstyle{dir}=[->, very thick]
+\tikzstyle{circ}=[draw, circle, very thick]
+
+\title{CIS 511 Homework 6}
+\author{Stephen Phillips, Dagaen Golomb}
+\date{April 8, 2015}
+
+
+\begin{document}
+\maketitle
+\subsection*{Problem 1}
+Let $TQBF_{CNF} = \{ \phi \mid \phi \textrm{ is a TQBF with the part after the quantifiers being in CNF} \}$. We show
+that $TQBF_{CNF}$ is PSPACE-Complete by reducing $TQBF$ to it in polynomial time.
+
+% Didn't we show the equivalence of arbitrary boolean formulas and CNF boolean formulas in class? How to convert one
+% To the other in polynomial time? Look here: http://en.wikipedia.org/wiki/Tseitin_transformation
+
+\subsection*{Problem 2}
+
+% Wait... isn't this just a slightly more complicated version of PATH? Meaning we just need to know:
+% If there is a path for both the cat and the mouse to the hole, and the cat's shortest path to the hole has length
+% less than or equal to the mouses, then the cat wins.
+
+\subsection*{Problem 3}
+% Don't know how to do this one.
+
+\subsection*{Problem 4}
+\subsubsection{Part a}
+% Is this not just enumerate all formulas less than this and check that they are equivalent by going through all 2^n
+% formulas? 
+
+\subsubsection{Part b}
+% This doesn't work because it takes exponential time to verify that two formulas are the same.
+
+\subsection*{Problem 5}
+% Really don't know
+
+\subsection*{Problem 6}
+% Also don't know
+
+
+\end{document}
+
