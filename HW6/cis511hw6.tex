@@ -30,27 +30,79 @@ that $TQBF_{CNF}$ is PSPACE-Complete by reducing $TQBF$ to it in polynomial time
 % Didn't we show the equivalence of arbitrary boolean formulas and CNF boolean formulas in class? How to convert one
 % To the other in polynomial time? Look here: http://en.wikipedia.org/wiki/Tseitin_transformation
 
+So we just need to show that any boolean formula can be converted to an equivalent CNF formula in polynomial time.
+We showed something similar to this in class in our reduction from SAT to 3SAT. Here we show this again.
+
+Consider the formula like logical a gate network (unable to show diagram), with the operators acting as two input
+gates. We can attach intermediate variables to the wires of the gates to change the formula into CNF form. We
+can consider the network to only have AND, OR and NOT gates without loss of generality. We now find the formulas
+that convert the gates into an equivalent CNF form, with existance qualifiers:
+\begin{itemize}
+\item AND gate:
+\begin{align*}
+xy \;\iff&\; \exists z : (z \implies (xy))(\bar{z} \implies \overline{(xy)}) & \textrm{Equivalent definitions} \\
+\iff &\; \exists z : (\bar{z} + (xy))(z + \bar{x} + \bar{y}) & \textrm{DeMorgan's law and Definition of Implication}\\
+\iff &\; \exists z : (\bar{z} + x)(\bar{z} + y)(z + \bar{x} + \bar{y}) & \textrm{Distributive law} \\
+\end{align*}
+\item OR gate:
+\begin{align*}
+x + y \;\iff&\;\exists z:(z \implies(x + y))(\bar{z}\implies \overline{(x + y)})&\textrm{Equivalent definitions} \\
+\iff &\; \exists z : (\bar{z} + x + y)(z + \bar{x}\bar{y}) & \textrm{DeMorgan's law and Definition of Implication} \\
+\iff &\; \exists z : (\bar{z} + x + y)(z + \bar{x})(z + \bar{y}) & \textrm{Distributive law} \\
+\end{align*}
+\item NOT gate:
+\begin{align*}
+\bar{x} \;\iff&\;\exists z:(z \implies x)(\bar{z}\implies \bar{x}) & \textrm{Equivalent definitions} \\
+\iff &\; \exists z : (\bar{z} + x)(z + \bar{x}) & \textrm{DeMorgan's law and Definition of Implication} \\
+\end{align*}
+\end{itemize}
+Thus for each gate we add in at most 3 more variables. If there are $n$ variables, and $m$ gates, this means the new
+formula would be of size $O(m + n)$ still. You can also think of this in terms of the original formula instead of the
+gates, There is a correspondence between gates and the $+$ or $\cdot$ operators, so it would still be the same factor
+of three blowup.
+% OK Not sure of this... I know it is still polynomial though.
+
 \subsection*{Problem 2}
+We are looking at the game of cat and mouse on a graph. The game is given an undirected graph $G$ and nodes $c$ and
+$m$, the starting nodes for the cat and mouse respectively, and a special `hole' node $h$, the cat wants to get to
+the same position as the mouse, and the mouse wants to get to the whole before that happens. The language is:
+
+\begin{align*}
+HAPPY-CAT =&\; \{ \langle G,c,m,h \rangle \mid \\
+          &\;\;\; G,c,m,h \textrm{ form a game of cat and mouse and Cat has a winning strategy} \\
+          &\;\;\;    \textrm{ if it moves first} \}
+\end{align*}
 
 % Wait... isn't this just a slightly more complicated version of PATH? Meaning we just need to know:
 % If there is a path for both the cat and the mouse to the hole, and the cat's shortest path to the hole has length
 % less than or equal to the mouses, then the cat wins.
 
+
 \subsection*{Problem 3}
-% Don't know how to do this one.
+We are considering $MIN-FORMULA = \{ \phi \mid \phi \textrm{ has no equivalent formula smaller than it}\}$.
+We want to show that if $P = NP$, then $MIN-FORMULA \in P$.
+% Does this not imply that MIN-FORMULA is in NP? And that EQUIVALENCY is in NP (how is that possible?).
+
 
 \subsection*{Problem 4}
+We use the definition of $MIN-FORMULA$ from above.
 \subsubsection{Part a}
+We want to show that $MIN-FORMULA \in PSPACE$
 % Is this not just enumerate all formulas less than this and check that they are equivalent by going through all 2^n
 % formulas? 
 
 \subsubsection{Part b}
+We will show that the following argument is wrong: $MIN-FORMULA \in coNP$ since if $\phi \notin MIN-FORMULA$ then
+$\phi$ has a smaller equivalent formula which a NTM can guess.
 % This doesn't work because it takes exponential time to verify that two formulas are the same.
 
 \subsection*{Problem 5}
+Show that the language of properly nested parenthesis and brackets is in $L$ (e.g. $([()()]([]))$ )
 % Really don't know
 
 \subsection*{Problem 6}
+Show that $UCYCLE = \{ \langle G \rangle \mid G \textrm{is an undirected graph with a simple cycle} \}$
+is in $L$.
 % Also don't know
 
 
