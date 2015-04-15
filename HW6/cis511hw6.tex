@@ -76,7 +76,24 @@ HAPPY-CAT =&\; \{ \langle G,c,m,h \rangle \mid \\
 % Wait... isn't this just a slightly more complicated version of PATH? Meaning we just need to know:
 % If there is a path for both the cat and the mouse to the hole, and the cat's shortest path to the hole has length
 % less than or equal to the mouses, then the cat wins.
+First we get out the obvious case: If the mouse is closer to the hole than the cat is, then the mouse always wins.
+This holds even when the graph is disconnected if you define the distance between nodes in disconnected components
+to be infinity. So now we consider the cases where the mouse is further away or equal distance from the hole:
+\begin{itemize}
+\item The mouse and cat are on different connected components, and the mouse and hole are on different connected
+components. Clearly the game is a draw as no one can further their goals. 
+\item The mouse
+\end{itemize}
 
+
+% Next we get out of the way the more tedious cases where the graph is disconnected.
+% \begin{itemize}
+% \item If the cat, mouse, and hole are all in different connected components, it is a stalemate, since there is
+% nothing any of them can do to move to their objectives. (Or if the cat and hole are on the same connected component
+% and the mouse on a different one)
+% \item If the mouse and hole are on one connected component, and the cat on another, the mouse will always win no
+% matter what the cat does
+% \end{itemize}
 
 \subsection*{Problem 3}
 We are considering 
@@ -97,6 +114,8 @@ a verifier since we assume $D_{EQUIV}$ runs in polynomial time. And since has a 
 assumption in $P$. So there is a deterministic Turing Machine $M$ that decides $\overline{MIN-FORMULA}$, and hence
 we can complement its output and get a deterministic Turing Machine that decides ${MIN-FORMULA}$
 
+In summary since we assume that $P = NP$, we can find the deterministic Turing Machines of the complements of our
+languages of interest and then complement the output.
 
 \subsection*{Problem 4}
 We use the definition of $MIN-FORMULA$ from above.
@@ -104,11 +123,40 @@ We use the definition of $MIN-FORMULA$ from above.
 We want to show that $MIN-FORMULA \in PSPACE$
 % Is this not just enumerate all formulas less than this and check that they are equivalent by going through all 2^n
 % formulas? 
+Here is the algorithm:
+
+\begin{algorithmic}
+\Function{$M$}{$\phi$}
+  \ForAll{$\psi$ boolean formulas smaller than $\phi$}
+    \ForAll{Inputs $x_1,\ldots,x_n \in \{0,1\}$}
+      \If{$\phi(x_1,\ldots,x_n) \neq \psi(x_1,\ldots,x_n)$}
+        \State Break the loop
+      \EndIf
+    \EndFor
+    \If{All inputs were the same}
+      \State Reject
+    \EndIf
+  \EndFor
+  \State Accept
+\EndFunction 
+\end{algorithmic}
+
+This can be shown to be correct fairly straightforwardly, since it iterates through all formulas smaller than
+$\phi$, and ensures that none of them are equivalent by checking iterating through all possible inputs.
+
+This takes exponential time, but it only needs to store the boolean formulas and the input values,
+and a constant amount of space to keep track of the solution whether the loop accepted space which is $O(m+n)$,
+hence polynomial. Since we only use polynomial space, we are in $PSPACE$.
 
 \subsubsection{Part b}
 We will show that the following argument is wrong: $MIN-FORMULA \in coNP$ since if $\phi \notin MIN-FORMULA$ then
 $\phi$ has a smaller equivalent formula which a NTM can guess.
 % This doesn't work because it takes exponential time to verify that two formulas are the same.
+In the previous problem we showed that $MIN-FORMULA \in P$ if $P = NP$. We used the fact that $P = NP$ to construct
+a polynomial time Turing Machine to check that two formulas are equivalent. However, we do not know such a Turing
+Machine, so we don't know how to verify in polynomial time if two formulas are equivalent. So even if we were shown
+a smaller equivalent formula, we wouldn't know how to prove it except by iterating through all possible inputs.
+So this proof is incomplete unless it described a way to do that.
 
 \subsection*{Problem 5}
 Show that the language of properly nested parenthesis and brackets is in $L$ (e.g. $([()()]([]))$ )
