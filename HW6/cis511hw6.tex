@@ -79,9 +79,23 @@ HAPPY-CAT =&\; \{ \langle G,c,m,h \rangle \mid \\
 
 
 \subsection*{Problem 3}
-We are considering $MIN-FORMULA = \{ \phi \mid \phi \textrm{ has no equivalent formula smaller than it}\}$.
+We are considering 
+\[ MIN-FORMULA = \{ \phi \mid \phi \textrm{ has no equivalent formula smaller than it}\} \]
 We want to show that if $P = NP$, then $MIN-FORMULA \in P$.
 % Does this not imply that MIN-FORMULA is in NP? And that EQUIVALENCY is in NP (how is that possible?).
+We will heavily rely on the assumption that $P = NP$. First it is easy to see that to check that two formulas are
+not equivalent is in NP: $\overline{EQUIV} =
+\{ \langle \phi, \psi \rangle \mid \phi \textrm{ is not equivalent to }\psi \}$. The verifier is the set of inputs
+that makes the two functions differ. Since we assume $P = NP$, we know that its complement $EQUIV$ is in $P$ as well. 
+That means there must be a deterministic Turing machine $D_{EQUIV}$ that decides $EQUIV$ in polynomial time.
+
+It is also easy to see that with $D_{EQUIV}$ it is easy to decide
+\[ \overline{MIN-FORMULA} = \{ \phi \mid \phi \textrm{ has an equivalent formula smaller than it}\} \]
+the complement
+of what we are looking for. The verifier is the formula that is equivalent and smaller. Note that this only works as
+a verifier since we assume $D_{EQUIV}$ runs in polynomial time. And since has a verifier it is in $NP$ and by 
+assumption in $P$. So there is a deterministic Turing Machine $M$ that decides $\overline{MIN-FORMULA}$, and hence
+we can complement its output and get a deterministic Turing Machine that decides ${MIN-FORMULA}$
 
 
 \subsection*{Problem 4}
