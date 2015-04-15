@@ -205,7 +205,25 @@ correct.
 Show that $UCYCLE = \{ \langle G \rangle \mid G \textrm{ is an undirected graph with a simple cycle} \}$
 is in $L$.
 
+We can check each node to see if it is in a cycle individually, keeping track of which node we are
+testing using log($|V|$) space. Let us number each edge, say by order they appear on our input.
+We can store an edge using log($|E|$) space.
 
+The procedure is as follows: Store the current vertex we are testing, as well as the edge we leave
+when testing. At each node, take the edge with the next highest labeling that one one we come in on.
+Note this can be done by looking at the input tape and remembering just the last traversed edge. If
+we enter on the largest labeled edge, leave through the smallest one. This in essence performs DFS.
+We accept if we return to the vertex in question on a different edge than the one we left on.
+
+To see why this works, lets say a graph has a cycle with edges 3, 7, and 10. The idea is to start
+at edge 3 moving towards the node with edge 7. At this next node, there may be edges 4, 5, and 6.
+However, in any case it will traverse any such edges and come back. When it does, it will by
+definition take the next largest edge. Eventually, we will take edge 7. This process then continues,
+with edge 10 eventually being taken. Since edge 10 is different from 3, we would accept.
+
+This only requires storing the current vertex, the edge we left on, and the label of the last
+traversed vertex. All of these can be stored in log-space each, so the problem only requires
+logarithmic space.
 
 \end{document}
 
