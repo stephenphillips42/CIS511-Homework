@@ -80,10 +80,21 @@ First we get out the obvious case: If the mouse is closer to the hole than the c
 This holds even when the graph is disconnected if you define the distance between nodes in disconnected components
 to be infinity. So now we consider the cases where the mouse is further away or equal distance from the hole:
 \begin{itemize}
+\item The trivial case where mouse and cat start on the same node or are only one off - the cat always wins.
 \item The mouse and cat are on different connected components, and the mouse and hole are on different connected
 components. Clearly the game is a draw as no one can further their goals. 
-\item The mouse
+\item The connected component is a tree (this will lead to the more general next case). Since the cat is closer,
+and there are no alternative paths for the mouse to take, the mouse is trapped and the cat always wins. 
+\item This case is more complicated. Say you remove the hole node. If the connected component the mouse is in this
+new Graph is a tree (i.e. no cycles), then the cat has a winning strategy. Since it can get to the hole node first
+then we are more or less back in the previous case where we are chasing the mouse on a tree so it is trapped
+\item The final case is where there are cycles in the connected component where the mouse is. This means that if the
+cat chased the mouse, they would run in circles forever. Since they are both logically perfect, the cat would never
+allow the mouse to get to the hole (if nothing else, it could just sit on the hole forever). So this case is a draw.
 \end{itemize}
+
+All these cases can be checked in polynomial time, using a breadth first search for instance. Since there are only
+a small number of these cases, this whole thing can be checked in polynomial time. 
 
 
 % Next we get out of the way the more tedious cases where the graph is disconnected.
@@ -99,7 +110,7 @@ components. Clearly the game is a draw as no one can further their goals.
 We are considering 
 \[ MIN-FORMULA = \{ \phi \mid \phi \textrm{ has no equivalent formula smaller than it}\} \]
 We want to show that if $P = NP$, then $MIN-FORMULA \in P$.
-% Does this not imply that MIN-FORMULA is in NP? And that EQUIVALENCY is in NP (how is that possible?).
+
 We will heavily rely on the assumption that $P = NP$. First it is easy to see that to check that two formulas are
 not equivalent is in NP: $\overline{EQUIV} =
 \{ \langle \phi, \psi \rangle \mid \phi \textrm{ is not equivalent to }\psi \}$. The verifier is the set of inputs
