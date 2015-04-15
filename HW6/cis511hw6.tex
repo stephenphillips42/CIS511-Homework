@@ -210,22 +210,28 @@ testing using log($|V|$) space. Let us number each edge, say by order they appea
 We can store an edge using log($|E|$) space.
 
 The procedure is as follows: Store the current vertex we are testing, as well as the edge we leave
-when testing. At each node, take the edge with the next highest labeling that one one we come in on.
+when testing. At each node, take the edge with the next highest labeling than the one we come in on.
 Note this can be done by looking at the input tape and remembering just the last traversed edge. If
 we enter on the largest labeled edge, leave through the smallest one. This in essence performs DFS.
+To see why, notice how at each vertex we iterate through increasing edge numbers, so if a higher edge
+is the one we are "looking for" we will find it. What if the edge is a lower label? Then we will exhaust
+the higher labels, return on the highest label, and take the lowest one. We will then start iterating
+through the lower numbers, effectively cycling through all edges with wrap-around.
+
 We accept if we return to the vertex in question on a different edge than the one we left on.
 
 To see why this works, lets say a graph has a cycle with edges 3, 7, and 10. The idea is to start
 at edge 3 moving towards the node with edge 7. At this next node, there may be edges 4, 5, and 6.
-However, in any case it will traverse any such edges and come back. When it does, it will by
+However, in this case it will traverse any such edges and come back. When it does, it will by
 definition take the next largest edge. Eventually, we will take edge 7. This process then continues,
 with edge 10 eventually being taken. Since edge 10 is different from 3, we would accept.
-Note this could work with other starting edges, the above is one illustration for example.
+Note this could work with other starting edges, the above is one illustration for example. In fact,
+any cyclic shift of the ordered edges would work.
 
-Using this process, we iterate through all vertices and try each edge as the starting edge. If one
-finds a cycle, we are done. We respond no only if all attempts fail.
+Using this process, we iterate through all vertices and try each incident edge as the starting edge.
+If one finds a cycle, we are done. We respond reject only if all attempts fail.
 
-This only requires storing the current vertex, the edge we left on, and the label of the last
+This only requires storing the evaluated vertex, the edge we left on, and the label of the last
 traversed vertex. All of these can be stored in log-space each, so the problem only requires
 logarithmic space.
 
