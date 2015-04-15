@@ -220,6 +220,10 @@ at edge 3 moving towards the node with edge 7. At this next node, there may be e
 However, in any case it will traverse any such edges and come back. When it does, it will by
 definition take the next largest edge. Eventually, we will take edge 7. This process then continues,
 with edge 10 eventually being taken. Since edge 10 is different from 3, we would accept.
+Note this could work with other starting edges, the above is one illustration for example.
+
+Using this process, we iterate through all vertices and try each edge as the starting edge. If one
+finds a cycle, we are done. We respond no only if all attempts fail.
 
 This only requires storing the current vertex, the edge we left on, and the label of the last
 traversed vertex. All of these can be stored in log-space each, so the problem only requires
