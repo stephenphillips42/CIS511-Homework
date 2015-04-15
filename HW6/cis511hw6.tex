@@ -160,7 +160,19 @@ So this proof is incomplete unless it described a way to do that.
 
 \subsection*{Problem 5}
 Show that the language of properly nested parenthesis and brackets is in $L$ (e.g. $([()()]([]))$ )
-% Really don't know
+
+First we make sure the brackets and parenthesis are both balanced with respect to each other.
+This is easy: keep a count of the number of outstanding brackets (or parentheses). Increment on each
+opening bracket and decrement on each closing one. If the count ever goes negative, reject. If we
+reach the end of the string and the count is non-zero, reject. This count number takes up O(log($n$))
+space in the worst case (when all characters are opening brackets, for example, the count will be
+the length of the string which can be represented in log($n$) bits).
+
+Given that the previous two checks succeeded, we must now check that they occur in the correct order,
+i.e. that the situation given in the example does not occur. Note that we can work on this recursively:
+we can check that the first bracket set is correct, and assume that the whole string is correct if the
+string between them is also correct. Therefore, we then check the next inner set of brackets for
+correctness, and so on.
 
 \subsection*{Problem 6}
 Show that $UCYCLE = \{ \langle G \rangle \mid G \textrm{is an undirected graph with a simple cycle} \}$
