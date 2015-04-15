@@ -185,6 +185,22 @@ we can check that the first bracket set is correct, and assume that the whole st
 string between them is also correct. Therefore, we then check the next inner set of brackets for
 correctness, and so on.
 
+To do this, we keep track of the current position of the bracket we are checking and its type.
+This takes log($n$) space for the position and a single space to remember the bracket type.
+Note that we only need to check open brackets, since we know the string is already balanced.
+We keep a count as we did before (including current opening symbol), except now we don't need to
+distinguish between brackets and parentheses. When we first reach 0, we check that the next symbol
+is the correct closing symbol for the symbol we are checking (using the stored variable of the
+current bracket type). We scan the string and do this for each opening symbol.
+
+To see that this is correct, see that the only way for this to fail is a situation similar to the
+given example ([)]. We know the brackets are balanced with respect to each symbol and that the total
+count is balanced. Therefore, the only way a string that makes it this far can fail is if it is
+matched with an incorrect closing symbol. In such a situation, when the count reaches zero we will
+be faced with an incorrect bracket and can reject. We only accept if we do not reject for all
+opening symbols. Given this and the fact that the string is balanced, we can assert the string is
+correct.
+
 \subsection*{Problem 6}
 Show that $UCYCLE = \{ \langle G \rangle \mid G \textrm{is an undirected graph with a simple cycle} \}$
 is in $L$.
