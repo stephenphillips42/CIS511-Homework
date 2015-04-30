@@ -27,12 +27,57 @@
 Show that $STRONGLY-CONNECTED = \{ \langle G \rangle \mid G \textrm{ is a graph that is strongly connected} \}$
 is $NL$-complete
 
-% Is this right?
-Since $NL = $ co-$NL$, and we know that $\overline{STRONGLY-CONNECTED}$ is in $NL$, then $STRONGLY-CONNECTED$ is in
+Since $NL =$ co-$NL$, and we know that $\overline{STRONGLY-CONNECTED}$ is in $NL$, then $STRONGLY-CONNECTED$ is in
 co-$NL$, hence $NL$. 
 
 \subsection*{Problem 2}
 Show that $2SAT$ is $NL$-complete.
+
+We show that $\overline{2SAT}$ is in co-$NL$, which means that since $NL =$ co-$NL$ that $2SAT$ is in $NL$. Given
+an instance of $2SAT$ in CNF form, we can interpret the clauses as implications: $(a + b) \iff (\bar{a} \implies b)$.
+We can `derive' one implication from another by using : $(u \implies v)(v \implies w) \iff (u \implies w)$.
+Since there are only two variables per clause, if the formula is unsatisfiable, then we must be able to derive both
+$(x \implies \bar{x})$ and $(\bar{x} \implies x)$, since if there was a chaine of implications that led to a 
+contradiction then we could reduce the chain using derivations to get to these implications.
+This in turn leads to:
+\[ (x \implies \bar{x})(\bar{x} \implies x) 
+\implies (\bar{x} + \bar{x})(x + x) 
+\implies \bar{x}x \implies 0 
+\]
+We can do this by non-deterministically following the implications that derive $(x \implies \bar{x})$ then again
+non-deterministically choose the ones that derive $(\bar{x} \implies x)$. If we find this line of implications, 
+which we only need to store $O(\log n)$ bits for the intermediate implication we are using to derive the above.
+
+We know that $\overline{PATH}$ is co-$NL$-complete, hence $NL$-complete. Therefore we want to show
+$\overline{PATH} \le_L 2SAT$. To do this we consider given a graph $G$ we create the graph $G^\mathcal{R}$, the
+graph with all the edges reversed. We know that there is a path from $s$ to $t$ in $G$ if and only if there is a
+path from $t$ to $s$ in $G^\mathcal{R}$. We use this in the reduction. 
+
+We do this by, given an instance of $\overline{PATH}$, meaning a graph $\langle G, s, t \rangle$, we create a boolean
+formula $\phi$ from the edges. So $\forall (u,v) \in E$, we create clause $(u \implies v) = (\bar{u} + v)$ and clause
+$(v' \implies u') = (\bar{v'} + u')$ (corresponding to $G^\mathcal{R}$, different variables), then and all these
+clauses together. Except replace the variables for the nodes $s$ and $t$ that from the instance with literals $x$ and
+$\bar{x}$ respectively, and also replace the variables $s'$ and $t'$ with $x$ and $\bar{x}$, respectively.
+This can be done in log space since we only need to keep track of the two variables in the clause we are currently
+reading, a constant amount of space. 
+
+Why does this mapping work? 
+If there is a path from $s$ to $t$, then we can derive $x \implies \bar{x}$ by following the implications on the path
+from $s$ to $t$. Similarly on the reversed graph we can follow the path from $t$ to $s$ to derive
+$\bar{x} \implies x$. Hence we can always derive both $x \implies \bar{x}$ and $\bar{x} \implies x$ when there is a
+path from $s$ to $t$. If this is the case then we can derive our unsatisfiablility when we showed $2SAT$ was in $NL$.
+Hence if there is a path, this formula is never satisfiable. If there is not a path from $s$ to $t$, the formula is
+always satisfiable. We examine several cases:
+\begin{enumerate}
+\item $t$ has a path to $s$ but not the other way around. That means in the $G$ part of the formula we have a clause
+  with $\bar{x} \implies x$, so we set $x$ to true, and all variables that $t$ can reach to true. For the variables
+  corresponding to $G^\mathcal{R}$ we set to false since the implication $x \implies \bar{x}$ is in that set of
+  clauses. Since we can vary the variables independently we can set both to true, and we can therefore set all the 
+  clauses to true. 
+\item $s$ and $t$ have no paths to each other at all. Then we are dealing with separate connected components, and 
+  similarly to last case we can just set $x$ to a value and set the implications in the chain appropriately. 
+\end{enumerate}
+So this instance of $2SAT$ is satisfiable if and only if there is no path from $s$ to $t$ in $G$. 
 
 \subsection*{Problem 3}
 Give an example of an $NL$-complete context free language.
