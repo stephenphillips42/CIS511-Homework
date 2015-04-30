@@ -37,7 +37,7 @@ We show that $\overline{2SAT}$ is in co-$NL$, which means that since $NL =$ co-$
 an instance of $2SAT$ in CNF form, we can interpret the clauses as implications: $(a + b) \iff (\bar{a} \implies b)$.
 We can `derive' one implication from another by using : $(u \implies v)(v \implies w) \iff (u \implies w)$.
 Since there are only two variables per clause, if the formula is unsatisfiable, then we must be able to derive both
-$(x \implies \bar{x})$ and $(\bar{x} \implies x)$, since if there was a chaine of implications that led to a 
+$(x \implies \bar{x})$ and $(\bar{x} \implies x)$, since if there was a chain of implications that led to a 
 contradiction then we could reduce the chain using derivations to get to these implications.
 This in turn leads to:
 \[ (x \implies \bar{x})(\bar{x} \implies x) 
@@ -65,7 +65,7 @@ Why does this mapping work?
 If there is a path from $s$ to $t$, then we can derive $x \implies \bar{x}$ by following the implications on the path
 from $s$ to $t$. Similarly on the reversed graph we can follow the path from $t$ to $s$ to derive
 $\bar{x} \implies x$. Hence we can always derive both $x \implies \bar{x}$ and $\bar{x} \implies x$ when there is a
-path from $s$ to $t$. If this is the case then we can derive our unsatisfiablility when we showed $2SAT$ was in $NL$.
+path from $s$ to $t$. If this is the case then we can derive our unsatisfiability when we showed $2SAT$ was in $NL$.
 Hence if there is a path, this formula is never satisfiable. If there is not a path from $s$ to $t$, the formula is
 always satisfiable. We examine several cases:
 \begin{enumerate}
@@ -96,7 +96,7 @@ $n = |s|^2 + |s| = O(|s|^2)$ this becomes $O(|s|^6) = O((|s|^2)^3) = O(n^3)$ (?)
 Prove using $pad$ from previous problem that if $NEXPTIME \neq EXPTIME$ then $P \neq NP$. 
 
 To do this we show the converse, that $P = NP \implies NEXPTIME = EXPTIME$. Given a language $L \in NEXPTIME$, we
-know that there is a non-deterministic turing machine $M$ that runs in $2^{O(f(n))}$ where $f(n)$ is a polynomial,
+know that there is a non-deterministic Turing machine $M$ that runs in $2^{O(f(n))}$ where $f(n)$ is a polynomial,
 bounded by say $c n^k$. Now we construct the language
 \[ pad(L,2^{c n^k}) = \left\{ x\#^{2^{c |x|^k}} \mid x \in L \right\} \]
 as the definition of $pad$ above. This language is in $NP$, since we construct a machine $N$ that first checks that
@@ -128,7 +128,7 @@ Show if $NP \subseteq BPP$, then $NP = RP$
 
 \subsection*{Problem 8}
 Define a $ZPP$-machine as a probabilistic Turing Machine that can output 3 things: accept, reject, and ?.
-A $ZPP$-machine $M$ decided a langauge $A$ if for every $x \in L$ it accepts with probability at least $2/3$, and
+A $ZPP$-machine $M$ decided a language $A$ if for every $x \in L$ it accepts with probability at least $2/3$, and
 rejects with probability 0, for $x \notin L$ it rejects with probability $2/3$ and accepts with probability 0, and it
 outputs $?$ on any input with probability at most $1/3$. Let $ZPP$ be the set of all languages that decided by
 $ZPP$ machines. Formally, a language $L \in ZPP$ if there is a probabilistic turing machine that satisfies
