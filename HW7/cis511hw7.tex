@@ -1,0 +1,72 @@
+\documentclass[english]{article}
+
+\usepackage[latin9]{inputenc}
+\usepackage[letterpaper]{geometry}
+\geometry{verbose,tmargin=1in,bmargin=1in,lmargin=1in,rmargin=1in}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{tikz}
+\usepackage{algpseudocode}
+\usepackage{booktabs}
+
+\usepackage{verbatim}
+\usepackage{tkz-berge}
+\usetikzlibrary{automata,positioning,arrows,shapes,petri,topaths}
+
+\tikzstyle{dir}=[->, very thick]
+\tikzstyle{circ}=[draw, circle, very thick]
+
+\title{CIS 511 Homework 7}
+\author{Stephen Phillips, Dagaen Golomb}
+\date{April 15, 2015}
+
+
+\begin{document}
+\maketitle
+\subsection*{Problem 1}
+Show that $STRONGLY-CONNECTED = \{ \langle G \rangle \mid G \textrm{ is a graph that is strongly connected} \}$
+is $NL$-complete
+
+% Is this right?
+Since $NL = $ co-$NL$, and we know that $\overline{STRONGLY-CONNECTED}$ is in $NL$, then $STRONGLY-CONNECTED$ is in
+co-$NL$, hence $NL$. 
+
+\subsection*{Problem 2}
+Show that $2SAT$ is $NL$-complete.
+
+\subsection*{Problem 3}
+Give an example of an $NL$-complete context free language.
+
+\subsection*{Problem 4}
+Define $pad : \Sigma^* \times \mathcal{N} \rightarrow \Sigma^*\#^*$ as $pad(s,l) = s\#^l$. Define
+the language $pad(A,f)$ for language $A$ and function $f : \mathcal{N} \rightarrow \mathcal{N}$ as
+\[ pad(A,f) = \{ pad(s,f(|s|)) \mid s \in A \} \]
+Show that if $A \in \textrm{TIME}(n^6)$ then $pad(A,n^2) \in \textrm{TIME}(n^3)$
+
+Is this not just that padding extends the length of the string? Now if you run the TM for $A$ on the 
+first part of the string, it will run in time $O(|s|^6)$, and since the length of our input is
+$n = |s|^2 + |s| = O(|s|^2)$ this becomes $O(|s|^6) = O((|s|^2)^3) = O(n^3)$ (?)
+
+\subsection*{Problem 5}
+Prove using $pad$ from previous problem that if $NEXPTIME \neq EXPTIME$ then $P \neq NP$. 
+
+\subsection*{Problem 6}
+Show that for an $n$ variable polynomial $P$, with degree at most $d$, and total degree of $t$. We showed in class
+that if you pick $r_1, \ldots, r_n$ uniformly and independently at random in a set $S$ then 
+\[ \mathbf{Pr}[P(r_1,r_2,\ldots,r_n) = 0] \le \frac{nd}{|S|} \]
+We now want to strengthen this result to:
+\[ \mathbf{Pr}[P(r_1,r_2,\ldots,r_n) = 0] \le \frac{t}{|S|} \]
+
+
+\subsection*{Problem 7}
+Show if $NP \subseteq BPP$, then $NP = RP$
+
+\subsection*{Problem 8}
+Define a $ZPP$-machine as a probabilistic Turing Machine that can output 3 things: accept, reject, and ?.
+A $ZPP$-machine $M$ decided a langauge $A$ if for every $x \in L$ it accepts with probability at least $2/3$, and
+rejects with probability 0, for $x \notin L$ it rejects with probability $2/3$ and accepts with probability 0, and it
+outputs $?$ on any input with probability at most $1/3$.
+
+
+\end{document}
+
