@@ -95,6 +95,26 @@ $n = |s|^2 + |s| = O(|s|^2)$ this becomes $O(|s|^6) = O((|s|^2)^3) = O(n^3)$ (?)
 \subsection*{Problem 5}
 Prove using $pad$ from previous problem that if $NEXPTIME \neq EXPTIME$ then $P \neq NP$. 
 
+To do this we show the converse, that $P = NP \implies NEXPTIME = EXPTIME$. Given a language $L \in NEXPTIME$, we
+know that there is a non-deterministic turing machine $M$ that runs in $2^{O(f(n))}$ where $f(n)$ is a polynomial,
+bounded by say $c n^k$. Now we construct the language
+\[ pad(L,2^{c n^k}) = \left\{ x\#^{2^{c |x|^k}} \mid x \in L \right\} \]
+as the definition of $pad$ above. This language is in $NP$, since we construct a machine $N$ that first checks that
+the string is in the right form of $x\#^{2^{c |x|^k}}$, then simulates $M$ on $x$, which runs in $O(2^{c |x|^k})$
+time, which is linear in the size of the input (due to the padding). Since this runs in non-deterministic polynomial
+time in the size of the input, by our assumption $P = NP$, we know that there exists a deterministic polynomial time
+algorithm that accepts $pad(L,2^{c n^k})$, let us denote it $N'$.
+
+We construct a machine $A$ that accepts $L$ in deterministic exponential time as follows. First we generate the
+string $y = x\#^{2^{c |x|^k}}$ in exponential time. Then we run $N'(y)$, which runs in polynomial time in 
+the length of the input. We return whatever $N'$ returns. This is deterministic since $N'$ is deterministic. It
+is still in exponential time. Let us say $N'$ has time complexity bounded by $c' n^{k'}$, then the runtime of this
+machine $A$ is $c'\left(2^{c |x|^k} + |x|\right)^{k'} = O(2^{ck' |x|^k})$ which is still exponential. Therefore,
+we have constructed a deterministic machine that accepts in exponential time $L$ for any $L$ in $NEXPTIME$.
+
+This technically only shows that $P = NP \implies NEXPTIME \subseteq EXPTIME$, but since
+$EXPTIME \subseteq NEXPTIME$ by definition, this is sufficient. 
+
 \subsection*{Problem 6}
 Show that for an $n$ variable polynomial $P$, with degree at most $d$, and total degree of $t$. We showed in class
 that if you pick $r_1, \ldots, r_n$ uniformly and independently at random in a set $S$ then 
@@ -110,7 +130,34 @@ Show if $NP \subseteq BPP$, then $NP = RP$
 Define a $ZPP$-machine as a probabilistic Turing Machine that can output 3 things: accept, reject, and ?.
 A $ZPP$-machine $M$ decided a langauge $A$ if for every $x \in L$ it accepts with probability at least $2/3$, and
 rejects with probability 0, for $x \notin L$ it rejects with probability $2/3$ and accepts with probability 0, and it
-outputs $?$ on any input with probability at most $1/3$.
+outputs $?$ on any input with probability at most $1/3$. Let $ZPP$ be the set of all languages that decided by
+$ZPP$ machines. Show that $ZPP = RP$ $\cap$ co-$RP$.
+
+\begin{enumerate}
+  \item $ZPP \supseteq RP$ $\cap$ co-$RP$. 
+    If a language $L$ is in $RP$ $\cap$ co-$RP$, then there exists two machines $R_1$ and $R_2$ such that
+    $\forall x \in L, \mathbf{Pr}[R_1(x) = 1] \ge 2/3$ and $\mathbf{Pr}[R_2(x) = 1] = 1$,
+    and $\forall x \notin L, \mathbf{Pr}[R_1(x) = 0] = 1$ and $\mathbf{Pr}[R_2(x) = 0] \ge 2/3$. We can construct
+    a $ZPP$ machine that accepts this language as follows. 
+
+    \begin{algorithmic} % Work in progress
+    \Function{$M$}{$\phi$}
+      \ForAll{$\psi$ boolean formulas smaller than $\phi$}
+        \ForAll{Inputs $x_1,\ldots,x_n \in \{0,1\}$}
+          \If{$\phi(x_1,\ldots,x_n) \neq \psi(x_1,\ldots,x_n)$}
+            \State Break the loop
+          \EndIf
+        \EndFor
+        \If{All inputs were the same}
+          \State Reject
+        \EndIf
+      \EndFor
+      \State Accept
+    \EndFunction 
+    \end{algorithmic}
+
+  \item $ZPP \subseteq RP$ $\cap$ co-$RP$. 
+\end{enumerate}
 
 
 \end{document}
