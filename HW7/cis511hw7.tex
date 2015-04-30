@@ -131,25 +131,121 @@ Define a $ZPP$-machine as a probabilistic Turing Machine that can output 3 thing
 A $ZPP$-machine $M$ decided a langauge $A$ if for every $x \in L$ it accepts with probability at least $2/3$, and
 rejects with probability 0, for $x \notin L$ it rejects with probability $2/3$ and accepts with probability 0, and it
 outputs $?$ on any input with probability at most $1/3$. Let $ZPP$ be the set of all languages that decided by
-$ZPP$ machines. Show that $ZPP = RP$ $\cap$ co-$RP$.
+$ZPP$ machines. Formally, a language $L \in ZPP$ if there is a probabilistic turing machine that satisfies
+\[\forall x \in L, \mathbf{Pr}[Z(x) = 1] \ge 2/3,\,\mathbf{Pr}[Z(x) = 0] = 0,\,\mathbf{Pr}[Z(x) = ?] \le 1/3 \]
+\[\forall x \notin L, \mathbf{Pr}[Z(x) = 0] \ge 2/3,\,\mathbf{Pr}[Z(x) = 1] = 0,\,\mathbf{Pr}[Z(x) = ?] \le 1/3\]
+Show that $ZPP = RP$ $\cap$ co-$RP$.
 
-\begin{enumerate}
-  \item $ZPP \supseteq RP$ $\cap$ co-$RP$. 
-    If a language $L$ is in $RP$ $\cap$ co-$RP$, then there exists two machines $R_1$ and $R_2$ such that
-    $\forall x \in L, \mathbf{Pr}[R_1(x) = 1] \ge 2/3$ and $\mathbf{Pr}[R_2(x) = 1] = 1$,
-    and $\forall x \notin L, \mathbf{Pr}[R_1(x) = 0] = 1$ and $\mathbf{Pr}[R_2(x) = 0] \ge 2/3$. We can construct
-    a $ZPP$ machine that accepts this language as follows. 
+First we show that $ZPP \supseteq RP$ $\cap$ co-$RP$. 
+If a language $L$ is in $RP$ $\cap$ co-$RP$, then there exists two machines $R_1'$ and $R_2'$ such that
+\[\forall x \in L, \mathbf{Pr}[R_1'(x) = 1] \ge 1/2, \;\; \mathbf{Pr}[R_2'(x) = 1] = 1\]
+and
+\[\forall x \notin L, \mathbf{Pr}[R_1'(x) = 0] = 1, \;\; \mathbf{Pr}[R_2'(x) = 0] \ge 1/2\]
 
-    \begin{algorithmic} % Work in progress
-    \Function{$M$}{$x$}
-      \State If $R_1(x)$ rejects, reject.
-      \State If $R_2(x)$ accepts, accept.
-      \State Output ?
-    \EndFunction 
-    \end{algorithmic}
+To make the analysis simpler, we use the fact that we can enhance the probabilities by running them several times,
+so we can create new machines $R_1$ and $R_2$ such that:
+\[\forall x \in L, \mathbf{Pr}[R_1'(x) = 1] \ge 2/3, \;\; \mathbf{Pr}[R_2'(x) = 1] = 1\]
+and
+\[\forall x \notin L, \mathbf{Pr}[R_1'(x) = 0] = 1, \;\; \mathbf{Pr}[R_2'(x) = 0] \ge 2/3\]
 
-  \item $ZPP \subseteq RP$ $\cap$ co-$RP$. 
-\end{enumerate}
+So now we can construct a $ZPP$ machine that accepts this language as follows. 
+\begin{algorithmic}
+\Function{$Z$}{$x$}
+  \State Let $y_1 = R_1(x)$
+  \State Let $y_2 = R_2(x)$
+  \State If $y_1 = y_2 = 0$, reject
+  \State If $y_1 = y_2 = 1$, accept
+  \State Output ?
+\EndFunction 
+\end{algorithmic}
+
+Let us analyze this, using that the randomness of $R_1$ and $R_2$ are independent. For $x \in L$:
+\begin{align*}
+\mathbf{Pr}[Z(x) = 1]
+  =&\; \mathbf{Pr}[R_1(x) = 1,\, R_2(x) = 1] \\
+  =&\; \mathbf{Pr}[R_1(x) = 1] \mathbf{Pr}[R_2(x) = 1] \\
+  \ge&\; (2/3)(1) = 2/3 \\
+\mathbf{Pr}[Z(x) = 0]
+  =&\; \mathbf{Pr}[R_1(x) = 0,\, R_2(x) = 0] \\
+  =&\; \mathbf{Pr}[R_1(x) = 0] \mathbf{Pr}[R_2(x) = 0] \\
+  =&\; \mathbf{Pr}[R_1(x) = 0](0) = 0 \\
+\mathbf{Pr}[Z(x) = ?]
+  =&\; \mathbf{Pr}[R_1(x) = 0,\, R_2(x) = 1 \textrm{ or } R_1(x) = 1,\, R_2(x) = 0] \\
+  =&\; \mathbf{Pr}[R_1(x) = 0,\, R_2(x) = 1] + \mathbf{Pr}[R_1(x) = 1,\, R_2(x) = 0] \\
+  =&\; \mathbf{Pr}[R_1(x) = 0]\mathbf{Pr}[R_2(x) = 1] + \mathbf{Pr}[R_1(x) = 1]\mathbf{Pr}[R_2(x) = 0] \\
+  \le&\; (1/3)(1) + \mathbf{Pr}[R_1(x) = 1](0) = 1/3 \\
+\end{align*}
+So it satisifies all the conditions of $ZPP$ in the case where $x \in L$. Now similarly for when $x \notin L$:
+\begin{align*}
+\mathbf{Pr}[Z(x) = 0]
+  =&\; \mathbf{Pr}[R_1(x) = 0,\, R_2(x) = 0] \\
+  =&\; \mathbf{Pr}[R_1(x) = 0] \mathbf{Pr}[R_2(x) = 0] \\
+  \ge&\; (1)(2/3) = 2/3 \\
+\mathbf{Pr}[Z(x) = 1]
+  =&\; \mathbf{Pr}[R_1(x) = 1,\, R_2(x) = 1] \\
+  =&\; \mathbf{Pr}[R_1(x) = 1] \mathbf{Pr}[R_2(x) = 1] \\
+  =&\; (0)\mathbf{Pr}[R_2(x) = 1] = 0 \\
+\mathbf{Pr}[Z(x) = ?]
+  =&\; \mathbf{Pr}[R_1(x) = 0,\, R_2(x) = 1 \textrm{ or } R_1(x) = 1,\, R_2(x) = 0] \\
+  =&\; \mathbf{Pr}[R_1(x) = 0,\, R_2(x) = 1] + \mathbf{Pr}[R_1(x) = 1,\, R_2(x) = 0] \\
+  =&\; \mathbf{Pr}[R_1(x) = 0]\mathbf{Pr}[R_2(x) = 1] + \mathbf{Pr}[R_1(x) = 1]\mathbf{Pr}[R_2(x) = 0] \\
+  \le&\; (1)(1/3) + (0)\mathbf{Pr}[R_2(x) = 0] = 1/3 \\
+\end{align*}
+So this also satisfies the conditions for $ZPP$, hence for any language in $RP \cap$ co-$RP$, we can construct a
+$ZPP$ machine. 
+
+Now we show that $ZPP \subseteq RP$ $\cap$ co-$RP$. First we show that $ZPP \subseteq RP$.
+For a language $L \in ZPP$, we have a machine $Z$ that satisfies.
+\[\forall x \in L, \mathbf{Pr}[Z(x) = 1] \ge 2/3,\,\mathbf{Pr}[Z(x) = 0] = 0,\,\mathbf{Pr}[Z(x) = ?] \le 1/3 \]
+\[\forall x \notin L, \mathbf{Pr}[Z(x) = 0] \ge 2/3,\,\mathbf{Pr}[Z(x) = 1] = 0,\,\mathbf{Pr}[Z(x) = ?] \le 1/3\]
+
+For this we need to construct a machine, $R_1$, that satisfies
+\[\forall x \in L, \mathbf{Pr}[R_1(x) = 1] \ge 1/2\]
+\[\forall x \notin L, \mathbf{Pr}[R_1(x) = 0] = 1\]
+We construct it as follows:
+\begin{algorithmic}
+\Function{$R_1$}{$x$}
+  \State Let $y = Z(x)$
+  \State If $y = 1$, accept
+  \State If $y = 0$ or $y = ?$, reject
+\EndFunction 
+\end{algorithmic}
+The analysis fairly simple. For $x \in L$
+\begin{align*}
+\mathbf{Pr}[R_1(x) = 1]
+  =&\; \mathbf{Pr}[Z(x) = 1] \ge 2/3 \ge 1/2 \\
+\end{align*}
+And for $x \notin L$
+\begin{align*}
+\mathbf{Pr}[Z(x) = 0]
+  =&\; \mathbf{Pr}[Z(x) = 0 \textrm{ or } Z(x) = ?] \\
+  =&\; 1 - \mathbf{Pr}[Z(x) = 1] \\
+  =&\; 1 - 0 = 1 \\
+\end{align*}
+
+Now we show that $ZPP \subseteq RP$. So we construct another machine $R_2$ that satisfies
+\[\forall x \in L, \mathbf{Pr}[R_2(x) = 1] = 1\]
+\[\forall x \notin L, \mathbf{Pr}[R_2(x) = 0] \ge 1/2\]
+Similarly to last time, we construct the following machine:
+\begin{algorithmic}
+\Function{$R_2$}{$x$}
+  \State Let $y = Z(x)$
+  \State If $y = 0$, reject
+  \State If $y = 1$ or $y = ?$, accept
+\EndFunction 
+\end{algorithmic}
+The analysis is similar to before. For $x \in L$
+\begin{align*}
+\mathbf{Pr}[Z(x) = 1]
+  =&\; \mathbf{Pr}[Z(x) = 1 \textrm{ or } Z(x) = ?] \\
+  =&\; 1 - \mathbf{Pr}[Z(x) = 0] \\
+  =&\; 1 - 0 = 1 \\
+\end{align*}
+And for $x \notin L$
+\begin{align*}
+\mathbf{Pr}[R_1(x) = 0]
+  =&\; \mathbf{Pr}[Z(x) = 0] \ge 2/3 \ge 1/2 \\
+\end{align*}
 
 
 \end{document}
