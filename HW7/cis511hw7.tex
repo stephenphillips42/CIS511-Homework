@@ -141,18 +141,10 @@ $ZPP$ machines. Show that $ZPP = RP$ $\cap$ co-$RP$.
     a $ZPP$ machine that accepts this language as follows. 
 
     \begin{algorithmic} % Work in progress
-    \Function{$M$}{$\phi$}
-      \ForAll{$\psi$ boolean formulas smaller than $\phi$}
-        \ForAll{Inputs $x_1,\ldots,x_n \in \{0,1\}$}
-          \If{$\phi(x_1,\ldots,x_n) \neq \psi(x_1,\ldots,x_n)$}
-            \State Break the loop
-          \EndIf
-        \EndFor
-        \If{All inputs were the same}
-          \State Reject
-        \EndIf
-      \EndFor
-      \State Accept
+    \Function{$M$}{$x$}
+      \State If $R_1(x)$ rejects, reject.
+      \State If $R_2(x)$ accepts, accept.
+      \State Output ?
     \EndFunction 
     \end{algorithmic}
 
