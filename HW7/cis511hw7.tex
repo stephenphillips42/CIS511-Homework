@@ -18,7 +18,7 @@
 
 \title{CIS 511 Homework 7}
 \author{Stephen Phillips, Dagaen Golomb}
-\date{April 15, 2015}
+\date{April 29, 2015}
 
 
 \begin{document}
@@ -27,8 +27,15 @@
 Show that $STRONGLY-CONNECTED = \{ \langle G \rangle \mid G \textrm{ is a graph that is strongly connected} \}$
 is $NL$-complete
 
-Since $NL =$ co-$NL$, and we know that $\overline{STRONGLY-CONNECTED}$ is in $NL$, then $STRONGLY-CONNECTED$ is in
-co-$NL$, hence $NL$. 
+Note that $STRONGLY-CONNECTED \in NL$. To see this, recall that $PATH \in NL$. To test for  $STRONGLY-CONNECTED$, we iterate through each s-t node pair and run the $PATH$ algorithm on it. We only need to keep a counter for which s and t we are on, each logarithmic in the input size, and run the $PATH$ algorithm which can be done in log space. Thus, we can check for $STRONGLY-CONNECTED$ in log space and $STRONGLY-CONNECTED \in NL$.
+
+Now we will reduce $PATH$ to $STRONGLY-CONNECTED$. Since $PATH \in NL-COMPLETE$, this will show $STRONGLY-CONNECTED$ is as well.
+
+The reduction is as follows: given $(G,s,t)$ as input to the $PATH$ problem, we add a directed edge from every node to $s$, and one from $t$ to every node. Now, this new graph $G'$ is strongly connected if a path from $s$ to $t$ exists. To see this, that for any node we can take the edge to $s$, then the path to $t$ (assuming it exists), and then the edge from $t$ to the destination node. Therefore, if $(G,s,t) \in PATH$ then $G' \in STRONGLY-CONNECTED$.
+
+In the other direction, let $G'$ be strongly connected. Then the original graph must have had a path from s to t. Had it not, then $G'$ won't have one either (this is apparent since we have not added any paths except those to s and from t, so we could not have inadvertently added an s-t path). But this contradicts that $G'$ is strongly connected. Therefore the original graph must have had an s-t path.
+
+Since $(G,s,t) \in PATH$ iff $G' \in STRONGLY-CONNECTED$, $STRONGLY-CONNECTED \in NL-COMPLETE$.
 
 \subsection*{Problem 2}
 Show that $2SAT$ is $NL$-complete.
