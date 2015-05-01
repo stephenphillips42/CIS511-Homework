@@ -135,7 +135,14 @@ that if you pick $r_1, \ldots, r_n$ uniformly and independently at random in a s
 We now want to strengthen this result to:
 \[ \mathbf{Pr}[P(r_1,r_2,\ldots,r_n) = 0] \le \frac{t}{|S|} \]
 
+As in class, the proof will be over induction on the number of variables in the polynomial. Like before, the base case of one variable is easy, as a monomial with [total] degree $t$ can have at most
+$t$ roots. Now assume this holds for $n-1$ variables. For a polynomial of $n$ variables, rewrite it like so: \[ P(x_1,x_2,\ldots,x_n) = \sum_{i=0}^d x_1^iP_i(x_2,\ldots,x_n) \]
 
+Using the largest such $i$ such that $P_i$ is not identically zero, we have that the degree of $P_i$ is less than or equal to $t-i$.
+
+Now we randomly assign values as we did in class. Now, \[ \mathbf{Pr}[P_i(r_2,\ldots,r_n) = 0] \le \frac{t-i}{|S|} \] (by induction hypothesis) and given the above is non-zero, \[ \mathbf{Pr}[P(r_1,\ldots,r_n) = 0] \le \frac{i}{|S|} \]
+
+The probability of $P(r_1,\ldots,r_n) = 0$ is the addition of of its probability when $P_i(r_2,\ldots,r_n) = 0$ and $P_i(r_2,\ldots,r_n) \ne 0$, so the total probability is \[ \le \frac{t-i}{|S|} + \frac{i}{|S|} = \frac{t}{|S|} \]
 
 \subsection*{Problem 7}
 Show if $NP \subseteq BPP$, then $NP = RP$.
