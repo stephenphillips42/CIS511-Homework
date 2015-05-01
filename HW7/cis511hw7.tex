@@ -136,8 +136,20 @@ We now want to strengthen this result to:
 \[ \mathbf{Pr}[P(r_1,r_2,\ldots,r_n) = 0] \le \frac{t}{|S|} \]
 
 
+
 \subsection*{Problem 7}
-Show if $NP \subseteq BPP$, then $NP = RP$
+Show if $NP \subseteq BPP$, then $NP = RP$.
+
+Let $NP \subseteq BPP$. We know $RP \subseteq NP$ (via using non-determinism for the coin tosses) so we only need to show $NP \subseteq RP$ under our given assumption. We can do this by showing an NP-Complete problem is in RP. We'll use the classic 3SAT.
+
+Since $3SAT \in NP$ and given our assumption, we have a BPP algorithm for 3SAT. Let the machine for this be M. Let the Boolean function be $\phi$. Now we construct a machine M' to decide 3SAT:
+Run M on $\phi$. If it rejects, reject. If it accepts, try setting the first variable to true and run M on the modified formula. If this returns false, set the variable to false and repeat. If it returns true, move on to the next variable and probe its value. Repeat this until an assignment for all variables is reached. Then check if it is a correct assignment and accept/reject as appropriate.
+
+It is clear that if $\phi$ is unsatisfiable that M' will never accept, since no complete assignment will cause it to accept and we only accept after a full assignment is found and verified.
+
+If $\phi$ is satisfiable and M gives us correct answers at each step, we will reach a satisfying assignment and accept. Using the amplification lemma (10.5 in book), we can make any one decision have an error probability of at most $2^{-k}$. We do this for $n$ variables, so we have error probability $n2^{-k}$. We can make this less than $1/2$ via our selection of $k$ (the book shows how to chose such $k$ within polynomial time).
+
+Thus, $3SAT \in RP$ so $NP \subseteq RP$.
 
 \subsection*{Problem 8}
 Define a $ZPP$-machine as a probabilistic Turing Machine that can output 3 things: accept, reject, and ?.
