@@ -89,15 +89,21 @@ So this instance of $2SAT$ is satisfiable if and only if there is no path from $
 \subsection*{Problem 3}
 Give an example of an $NL$-complete context free language.
 
+$L = \{a^ib^i | i \ge 0\}$
+
 \subsection*{Problem 4}
 Define $pad : \Sigma^* \times \mathcal{N} \rightarrow \Sigma^*\#^*$ as $pad(s,l) = s\#^l$. Define
 the language $pad(A,f)$ for language $A$ and function $f : \mathcal{N} \rightarrow \mathcal{N}$ as
 \[ pad(A,f) = \{ pad(s,f(|s|)) \mid s \in A \} \]
 Show that if $A \in \textrm{TIME}(n^6)$ then $pad(A,n^2) \in \textrm{TIME}(n^3)$
 
-Is this not just that padding extends the length of the string? Now if you run the TM for $A$ on the 
-first part of the string, it will run in time $O(|s|^6)$, and since the length of our input is
-$n = |s|^2 + |s| = O(|s|^2)$ this becomes $O(|s|^6) = O((|s|^2)^3) = O(n^3)$ (?)
+Let M be the machine that decides A in time $O(n^6)$, and note $f(n) = n^2$ for the given problem. Construct a new TM M' which does the following:
+
+On input $x$, check if the input is of the form $pad(y,|y|^2)$ for some string $y$. Note that from our construction, the string will be a perfect square in length with the first sqrt($n$) characters in A and the rest the special symbol. One can successively square an incremented counter until the answer is greater than or equal to $n$. Then check that $x$ matches the required format. Copying and comparing integers are linear operations, and multiplying is quadratic time, and this needs to be done at most a linear number of times (even if each square only incremented by 1 each time, which is clearly conservative). Thus, this can be done in O($n^3$) time or less. If it is not in the correct form, reject.
+
+If $x$ is in the correct form, simulate M on $y$ and echo its answer. This takes time $O(|y|^6) = O((|y|^2)^3) = O(n^3)$.
+
+Since each part can be done in cubic time, this whole process can be done in $O(n^3)$ time.
 
 \subsection*{Problem 5}
 Prove using $pad$ from previous problem that if $NEXPTIME \neq EXPTIME$ then $P \neq NP$. 
